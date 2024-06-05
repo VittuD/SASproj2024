@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServiceSummary {
-    private HashMap<Turn, List<Assignment>> serviceSummary;
+    protected HashMap<Turn, ArrayList<Assignment>> serviceSummary;
 
     public ServiceSummary() {
         this.serviceSummary = new HashMap<>();
@@ -49,17 +49,17 @@ public class ServiceSummary {
         return gson.fromJson(json, type);
     }
 
-    public void open(Service service) {
-        Service currentService = new Service();
+    public ServiceSummary open(Service service) {
+        ServiceSummary currentService = new ServiceSummary();
         String serviceQuery = "SELECT * FROM Services WHERE id = " + service.getId();
 
         PersistenceManager.executeQuery(serviceQuery, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
-                currentService.setId(rs.getInt("id"));
-                currentService.setServiceSummary(convertJsonToServiceSummary(rs.getString("serviceSummary")));
+                currentService.serviceSummary = convertJsonToServiceSummary(rs.getString("service_summary"));
             }
         });
+        return currentService;
     }
 
     public List<Assignment> showAssignmentsState(Turn turn) {
