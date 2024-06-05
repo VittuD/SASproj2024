@@ -68,13 +68,14 @@ public class ServiceSummary {
     public ServiceSummary create(Menu menu) {
         ServiceSummary newServiceSummary = new ServiceSummary();
         for (Section section : menu.getSections()) {
-            for (MenuItem item : section.getItems()) {               ;
+            for (MenuItem item : section.getItems()) {
                 for (Preparation preparation : item.getItemRecipe().getPreparations()) {
                     Duration preparationTime = Duration.ofMinutes(0);
                     newServiceSummary.addAssignment(preparation, new KitchenTurn(), preparationTime, new ArrayList<>(), 1);
                 }
             }
         }
+
         return newServiceSummary;
     }
 
@@ -94,7 +95,6 @@ public class ServiceSummary {
      * @param quantity The quantity for the assignment.
      */
     public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
-        //TODO persistence
         if (kD instanceof Preparation || (kD instanceof Recipe && ((Recipe) kD).getPreparations().isEmpty())) {
             this.serviceSummary.get(kitchenTurn).add(new Assignment.Builder()
                     .description(kD.getDescription())
@@ -105,10 +105,7 @@ public class ServiceSummary {
                     .kitchenDuty(kD)
                     .kitchenTurn(kitchenTurn)
                     .build());
-            //Persistence ServiceSummary
-            String json = convertServiceSummaryToJson(this.serviceSummary);
-            String updateQuery = "UPDATE Services SET service_summary = '" + json + "' WHERE kitchen_turn = " + convertKitchenTurnToJson(kitchenTurn);
-            PersistenceManager.executeUpdate(updateQuery);
+            saveServiceSummary(kitchenTurn);
         }
         if (kD instanceof Recipe) {
             if (!((Recipe) kD).getPreparations().isEmpty()) {
@@ -120,12 +117,21 @@ public class ServiceSummary {
 
     }
 
-    public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
-        this.serviceSummary.get(kitchenTurn).remove(assignment);
-        //TODO persistence
+    private void saveServiceSummary(KitchenTurn kitchenTurn) {
+        //Persistence ServiceSummary
+        String json = convertServiceSummaryToJson(this.serviceSummary);
+        String updateQuery = "UPDATE Services SET service_summary = '" + json + "' WHERE kitchen_turn = " + convertKitchenTurnToJson(kitchenTurn);
+        PersistenceManager.executeUpdate(updateQuery);
     }
 
-    /*
+    public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
+        this.serviceSummary.get(kitchenTurn).remove(assignment);
+
+        // Persistence ServiceSummary
+        saveServiceSummary(kitchenTurn);
+    }
+
+    /**
      * This method is used to modify the details of an Assignment.
      * It gets the List of Assignments for a given Turn and modifies the details of the specific Assignment instance.
      *
@@ -138,7 +144,7 @@ public class ServiceSummary {
      * @param estimatedTime The new estimated time duration for the assignment.
      * @throws IllegalArgumentException If the passed list of assignments does not contain the same assignments as the serviceSummary map.
      */
-    public void modifyAssignment(Assignment assignment, Turn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) throws IllegalArgumentException {
+    public void modifyAssignment(Assignment assignment, KitchenTurn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) throws IllegalArgumentException {
         List<Assignment> assignments = this.serviceSummary.get(turn);
         int index = assignments.indexOf(assignment);
 
@@ -157,6 +163,9 @@ public class ServiceSummary {
                 .build();
 
         assignments.set(index, modifiedAssignment);
+
+        // Persistence ServiceSummary
+        saveServiceSummary(turn);
     }
 
     /**
@@ -178,7 +187,9 @@ public class ServiceSummary {
         }
 
         this.serviceSummary.put(turn, assignments);
-        //TODO persistence
+
+        // Persistence ServiceSummary
+        saveServiceSummary(turn);
     }
 
     /**
