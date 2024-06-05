@@ -206,7 +206,7 @@ CREATE TABLE `Services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `event_id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL,
-  `proposed_menu_id` int(11) NOT NULL DEFAULT '0',
+  `place` varchar(128) DEFAULT NULL,
   `approved_menu_id` int(11) DEFAULT '0',
   `service_date` date DEFAULT NULL,
   `time_start` time DEFAULT NULL,

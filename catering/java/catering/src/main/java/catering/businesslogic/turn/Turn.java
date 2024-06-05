@@ -1,7 +1,7 @@
 package catering.businesslogic.turn;
 
 import catering.businesslogic.assignment.Assignment;
-import catering.businesslogic.assignment.Service;
+import catering.businesslogic.event.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

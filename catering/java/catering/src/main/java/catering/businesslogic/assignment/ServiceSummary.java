@@ -1,16 +1,23 @@
 package catering.businesslogic.assignment;
 
+import catering.businesslogic.event.Service;
 import catering.businesslogic.turn.Turn;
 import catering.businesslogic.recipe.KitchenDuty;
 import catering.businesslogic.turn.KitchenTurn;
 import catering.businesslogic.user.Cook;
 import catering.businesslogic.menu.Menu;
+import catering.persistence.PersistenceManager;
+import catering.persistence.ResultHandler;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ServiceSummary {
     private HashMap<Turn, ArrayList<Assignment>> serviceSummary;
@@ -21,6 +28,32 @@ public class ServiceSummary {
 
     public void create(Menu menu) {
         // Logic to create service summary from menu
+    }
+
+    public void open(Service service) {
+        Service currentService = new Service();
+        String serviceQuery = "SELECT * FROM Services WHERE id = ?";
+
+        PersistenceManager.executeQuery(serviceQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                currentService.setId(rs.getInt("id"));
+                currentService.setEventId(rs.getInt("eventId"));
+                currentService.setName(rs.getString("name"));
+                currentService.setPlace(rs.getString("place"));
+                currentService.setApprovedMenuId(rs.getInt("approvedMenuId"));
+                PersistenceManager.executeQuery("SELECT * FROM Menus WHERE id = " + currentService.getApprovedMenuId(), new ResultHandler() {
+                    @Override
+                    public void handle(ResultSet rs) throws SQLException {
+                        // Logic to set menu    
+                    }
+                });
+                currentService.setServiceDate(Date.valueOf(rs.getDate("serviceDate").toLocalDate()));
+                currentService.setTimeStart(Time.valueOf(rs.getTime("timeStart").toLocalTime()));
+                currentService.setTimeEnd(Time.valueOf(rs.getTime("timeEnd").toLocalTime()));
+                currentService.setExpectedParticipants(rs.getInt("expectedParticipants"));
+            }
+        });
     }
 
     public List<Assignment> showAssignmentsState(Turn turn) {
