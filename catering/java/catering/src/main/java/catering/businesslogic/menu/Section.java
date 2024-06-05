@@ -1,7 +1,5 @@
 package catering.businesslogic.menu;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import catering.persistence.BatchUpdateHandler;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -10,22 +8,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Section {
     private int id;
     private String name;
-    private ObservableList<MenuItem> sectionItems;
+    private ArrayList<MenuItem> sectionItems;
 
     public Section(String name) {
         id = 0;
         this.name = name;
-        sectionItems = FXCollections.observableArrayList();
+        sectionItems = new ArrayList<>();
     }
 
     public Section(Section s) {
         this.id = 0;
         this.name = s.name;
-        this.sectionItems = FXCollections.observableArrayList();
+        this.sectionItems = new ArrayList<>();
         for (MenuItem original: s.sectionItems) {
             this.sectionItems.add(new MenuItem(original));
         }
@@ -36,8 +35,8 @@ public class Section {
     }
 
 
-    public void updateItems(ObservableList<MenuItem> newItems) {
-        ObservableList<MenuItem> updatedList = FXCollections.observableArrayList();
+    public void updateItems(ArrayList<MenuItem> newItems) {
+        ArrayList<MenuItem> updatedList = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i++) {
             MenuItem mi = newItems.get(i);
             MenuItem prev = this.findItemById(mi.getId());
@@ -89,8 +88,8 @@ public class Section {
         this.name = name;
     }
 
-    public ObservableList<MenuItem> getItems() {
-        return FXCollections.unmodifiableObservableList(this.sectionItems);
+    public ArrayList<MenuItem> getItems() {
+        return this.sectionItems;
     }
 
     public int getItemsCount() {
@@ -148,8 +147,8 @@ public class Section {
     }
 
 
-    public static ObservableList<Section> loadSectionsFor(int menu_id) {
-        ObservableList<Section> result = FXCollections.observableArrayList();
+    public static ArrayList<Section> loadSectionsFor(int menu_id) {
+        ArrayList<Section> result = new ArrayList<>();
         String query = "SELECT * FROM MenuSections WHERE menu_id = " + menu_id +
                 " ORDER BY position";
         PersistenceManager.executeQuery(query, new ResultHandler() {

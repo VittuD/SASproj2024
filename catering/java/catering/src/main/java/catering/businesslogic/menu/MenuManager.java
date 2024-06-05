@@ -4,7 +4,6 @@ import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.recipe.Recipe;
 import catering.businesslogic.user.User;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -307,7 +306,7 @@ public class MenuManager {
         return this.currentMenu;
     }
 
-    public ObservableList<Menu> getAllMenus() {
+    public ArrayList<Menu> getAllMenus() {
         return Menu.loadAllMenus();
     }
 

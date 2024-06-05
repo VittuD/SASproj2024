@@ -1,12 +1,12 @@
 package catering.businesslogic.event;
 
+import java.util.ArrayList;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import catering.businesslogic.user.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -18,15 +18,15 @@ public class EventInfo implements EventItemInfo {
     private int participants;
     private User organizer;
 
-    private ObservableList<ServiceInfo> services;
+    private ArrayList<ServiceInfo> services;
 
     public EventInfo(String name) {
         this.name = name;
         id = 0;
     }
 
-    public ObservableList<ServiceInfo> getServices() {
-        return FXCollections.unmodifiableObservableList(this.services);
+    public ArrayList<ServiceInfo> getServices() {
+        return this.services;
     }
 
     public String toString() {
@@ -35,8 +35,8 @@ public class EventInfo implements EventItemInfo {
 
     // STATIC METHODS FOR PERSISTENCE
 
-    public static ObservableList<EventInfo> loadAllEventInfo() {
-        ObservableList<EventInfo> all = FXCollections.observableArrayList();
+    public static ArrayList<EventInfo> loadAllEventInfo() {
+        ArrayList<EventInfo> all = new ArrayList<>();
         String query = "SELECT * FROM Events WHERE true";
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
