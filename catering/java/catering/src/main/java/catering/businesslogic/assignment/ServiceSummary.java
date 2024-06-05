@@ -46,6 +46,12 @@ public class ServiceSummary {
         return gson.fromJson(json, type);
     }
 
+    public static String convertKitchenTurnToJson(KitchenTurn kitchenTurn) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<KitchenTurn>() {}.getType();
+        return gson.toJson(kitchenTurn, type);
+    }
+
     public ServiceSummary open(Service service) {
         ServiceSummary currentService = new ServiceSummary();
         String serviceQuery = "SELECT * FROM Services WHERE id = " + service.getId();
@@ -99,6 +105,10 @@ public class ServiceSummary {
                     .kitchenDuty(kD)
                     .kitchenTurn(kitchenTurn)
                     .build());
+            //Persistance ServiceSummary
+            String json = convertServiceSummaryToJson(this.serviceSummary);
+            String updateQuery = "UPDATE Services SET service_summary = '" + json + "' WHERE kitchen_turn = " + convertKitchenTurnToJson(kitchenTurn);
+            PersistenceManager.executeUpdate(updateQuery);
         }
         if (kD instanceof Recipe) {
             if (!((Recipe) kD).getPreparations().isEmpty()) {
@@ -107,6 +117,7 @@ public class ServiceSummary {
                 }
             }
         }
+
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
