@@ -14,8 +14,6 @@ public class Assignment {
     private List<Cook> cooks;
     private int quantity;
 
-
-
     public Assignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, String desc, boolean completed, int quantity) {
         this.description = desc;
         this.estimatedTime = eT;

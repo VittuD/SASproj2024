@@ -102,8 +102,26 @@ public class ServiceSummary {
         // Logic to modify assignment
     }
 
-    public void orderAssignments(List<Assignment> assignments) {
-        // Logic to order assignments
+    /*
+     * This method is used to order the assignments based on user supplied preference.
+     * First it checks that the passed list of assignments contains exactly the same assignments as the serviceSummary map.
+     * Then it orders the assignments based on the user supplied preference.
+     *
+     * @param assignments The list of Assignment instances to be ordered.
+     * @throws IllegalArgumentException If the passed list of assignments does not contain the same assignments as the serviceSummary map.
+     */
+    public void orderAssignments(List<Assignment> assignments, KitchenTurn turn) {
+        // Check if the passed list of assignments contains exactly the same assignments as the serviceSummary map
+        for (List<Assignment> assignmentList : serviceSummary.values()) {
+            for (Assignment assignment : assignmentList) {
+                if (!assignments.contains(assignment)) {
+                    throw new IllegalArgumentException("The passed list of assignments does not contain the same assignments as the serviceSummary map.");
+                }
+            }
+        }
+
+        this.serviceSummary.put(turn, assignments);
+        //TODO persistence
     }
 
     /**
