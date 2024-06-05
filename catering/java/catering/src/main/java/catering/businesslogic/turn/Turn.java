@@ -20,6 +20,17 @@ public abstract class Turn {
 
     public Turn(){}
 
+    // Complete constructor
+    public Turn(LocalDate date, LocalTime timeStart, LocalTime timeEnd, List<Assignment> assList, boolean published, Period deadline, Service service) {
+        this.date = date;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.assList = assList;
+        this.published = published;
+        this.deadline = deadline;
+        this.service = service;
+    }
+
     @Override
     public String toString() {
         return "Turn{" +
