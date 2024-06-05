@@ -1,10 +1,9 @@
 package catering.businesslogic.event;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
+import java.util.ArrayList;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +21,10 @@ public class ServiceInfo implements EventItemInfo {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
 
     public String toString() {
         return name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";
@@ -29,8 +32,8 @@ public class ServiceInfo implements EventItemInfo {
 
     // STATIC METHODS FOR PERSISTENCE
 
-    public static ObservableList<ServiceInfo> loadServiceInfoForEvent(int event_id) {
-        ObservableList<ServiceInfo> result = FXCollections.observableArrayList();
+    public static ArrayList<ServiceInfo> loadServiceInfoForEvent(int event_id) {
+        ArrayList<ServiceInfo> result = new ArrayList<>();
         String query = "SELECT id, name, service_date, time_start, time_end, expected_participants " +
                 "FROM Services WHERE event_id = " + event_id;
         PersistenceManager.executeQuery(query, new ResultHandler() {

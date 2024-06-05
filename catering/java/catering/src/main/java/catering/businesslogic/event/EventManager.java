@@ -1,9 +1,9 @@
 package catering.businesslogic.event;
 
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
 
 public class EventManager {
-    public ObservableList<EventInfo> getEventInfo() {
+    public ArrayList<EventInfo> getEventInfo() {
         return EventInfo.loadAllEventInfo();
     }
 }

@@ -7,8 +7,8 @@ import catering.businesslogic.event.ServiceInfo;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.Section;
 import catering.businesslogic.recipe.Recipe;
-import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -26,12 +26,12 @@ public class TestCatERing {
 
             System.out.println("\nTEST DEFINE SECTION");
             Section antipasti = CatERing.getInstance().getMenuManager().defineSection("Antipasti");
-            Section primi = CatERing.getInstance().getMenuManager().defineSection("Primi");
+            // Section primi = CatERing.getInstance().getMenuManager().defineSection("Primi");
             Section secondi = CatERing.getInstance().getMenuManager().defineSection("Secondi");
             System.out.println(m.testString());
 
             System.out.println("\nTEST GET EVENT INFO");
-            ObservableList<EventInfo> events = CatERing.getInstance().getEventManager().getEventInfo();
+            ArrayList<EventInfo> events = CatERing.getInstance().getEventManager().getEventInfo();
             for (EventInfo e: events) {
                 System.out.println(e);
                 for (ServiceInfo s: e.getServices()) {
@@ -41,7 +41,7 @@ public class TestCatERing {
             System.out.println("");
 
             System.out.println("\nTEST GET RECIPES AND INSERT ITEM IN SECTION");
-            ObservableList<Recipe> recipes = CatERing.getInstance().getRecipeManager().getRecipes();
+            ArrayList<Recipe> recipes = CatERing.getInstance().getRecipeManager().getRecipes();
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(0), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(1), antipasti);
             CatERing.getInstance().getMenuManager().insertItem(recipes.get(2), antipasti);

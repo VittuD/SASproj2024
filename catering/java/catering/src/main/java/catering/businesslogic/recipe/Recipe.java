@@ -1,7 +1,5 @@
 package catering.businesslogic.recipe;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -38,7 +36,7 @@ public class Recipe {
 
     // STATIC METHODS FOR PERSISTENCE
 
-    public static ObservableList<Recipe> loadAllRecipes() {
+    public static ArrayList<Recipe> loadAllRecipes() {
         String query = "SELECT * FROM Recipes";
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
@@ -54,7 +52,7 @@ public class Recipe {
                 }
             }
         });
-        ObservableList<Recipe> ret =  FXCollections.observableArrayList(all.values());
+        ArrayList<Recipe> ret = new ArrayList<Recipe>(all.values());
         Collections.sort(ret, new Comparator<Recipe>() {
             @Override
             public int compare(Recipe o1, Recipe o2) {
@@ -64,8 +62,8 @@ public class Recipe {
         return ret;
     }
 
-    public static ObservableList<Recipe> getAllRecipes() {
-        return FXCollections.observableArrayList(all.values());
+    public static ArrayList<Recipe> getAllRecipes() {
+        return new ArrayList<Recipe>(all.values());
     }
 
     public static Recipe loadRecipeById(int id) {

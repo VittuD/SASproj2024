@@ -1,7 +1,6 @@
 package catering.businesslogic.recipe;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
 
 public class RecipeManager {
 
@@ -9,7 +8,7 @@ public class RecipeManager {
         Recipe.loadAllRecipes();
     }
 
-    public ObservableList<Recipe> getRecipes() {
-        return FXCollections.unmodifiableObservableList(Recipe.getAllRecipes());
+    public ArrayList<Recipe> getRecipes() {
+        return Recipe.getAllRecipes();
     }
 }

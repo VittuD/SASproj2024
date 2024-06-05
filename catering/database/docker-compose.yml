@@ -13,7 +13,7 @@ services:
     ports:
       - 3306:3306
     # volumes:
-    #   - dbdata:/var/lib/mysql
+    #  - dbdata:/var/lib/mysql
 
   adminer:
     image: adminer
@@ -22,4 +22,4 @@ services:
       - 8080:8080
 
 # volumes:
-#   dbdata:
+#  dbdata:

@@ -1,18 +1,18 @@
 package catering.businesslogic.user;
 
-import javafx.collections.FXCollections;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class User {
 
-    private static Map<Integer, User> loadedUsers = FXCollections.observableHashMap();
+    private static Map<Integer, User> loadedUsers = new HashMap<Integer, User>();
 
     public static enum Role {SERVIZIO, CUOCO, CHEF, ORGANIZZATORE};
 

@@ -9,6 +9,9 @@ public class PersistenceManager {
     private static String username = "root";
     private static String password = "4321test";
 
+    // Usare la seguente stringa per connettersi a un database PostgreSQL
+    // private static String url = String.format("jdbc:postgresql://localhost/catering?ssl=true");
+
     private static int lastId;
 
     public static String escapeString(String input) {
@@ -19,6 +22,7 @@ public class PersistenceManager {
         input = input.replace("\t", "\\t");
         return input;
     }
+
     public static void testSQLConnection() {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM Users");

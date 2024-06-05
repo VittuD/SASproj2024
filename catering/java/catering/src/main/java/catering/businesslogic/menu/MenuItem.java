@@ -1,8 +1,6 @@
 package catering.businesslogic.menu;
 
 import catering.businesslogic.recipe.Recipe;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import catering.persistence.BatchUpdateHandler;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -100,8 +98,8 @@ public class MenuItem {
         mi.id = PersistenceManager.getLastId();
     }
 
-    public static ObservableList<MenuItem> loadItemsFor(int menu_id, int sec_id) {
-        ObservableList<MenuItem> result = FXCollections.observableArrayList();
+    public static ArrayList<MenuItem> loadItemsFor(int menu_id, int sec_id) {
+        ArrayList<MenuItem> result = new ArrayList<>();
         ArrayList<Integer> recids = new ArrayList<>();
         String query = "SELECT * FROM MenuItems WHERE menu_id = " + menu_id +
                 " AND " +

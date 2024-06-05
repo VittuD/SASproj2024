@@ -3,9 +3,6 @@ package catering.businesslogic.menu;
 import catering.businesslogic.CatERing;
 import catering.businesslogic.recipe.Recipe;
 import catering.businesslogic.user.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import catering.persistence.BatchUpdateHandler;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -14,23 +11,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Menu {
-    private static Map<Integer, Menu> loadedMenus = FXCollections.observableHashMap();
+    private static Map<Integer, Menu> loadedMenus = new HashMap<Integer, Menu>();
     private int id;
     private String title;
     private boolean published;
     private boolean inUse;
 
-    private ObservableMap<String, Boolean> featuresMap;
-    private ObservableList<MenuItem> freeItems;
-    private ObservableList<Section> sections;
+    private Map<String, Boolean> featuresMap;
+    private ArrayList<MenuItem> freeItems;
+    private ArrayList<Section> sections;
 
     private User owner;
 
     private Menu() {
-        this.featuresMap = FXCollections.observableHashMap();
+        this.featuresMap = new HashMap<>();
     }
 
     public Menu(User user, String title, String[] menuFeatures) {
@@ -42,15 +40,15 @@ public class Menu {
 
         this.owner = user;
 
-        this.featuresMap = FXCollections.observableHashMap();
+        this.featuresMap = new HashMap<>();
 
 
         for (String s : menuFeatures) {
             this.featuresMap.put(s, false);
         }
 
-        this.sections = FXCollections.observableArrayList();
-        this.freeItems = FXCollections.observableArrayList();
+        this.sections = new ArrayList<>();
+        this.freeItems = new ArrayList<>();
 
     }
 
@@ -60,17 +58,17 @@ public class Menu {
         this.published = false;
         this.inUse = false;
         this.owner = owner;
-        this.featuresMap = FXCollections.observableHashMap();
+        this.featuresMap = new HashMap<>();
         for (String feat: m.featuresMap.keySet()) {
             this.featuresMap.put(feat, m.featuresMap.get(feat));
         }
 
-        this.sections = FXCollections.observableArrayList();
+        this.sections = new ArrayList<>();
         for (Section original: m.sections) {
             this.sections.add(new Section(original));
         }
 
-        this.freeItems = FXCollections.observableArrayList();
+        this.freeItems = new ArrayList<>();
         for (MenuItem original: m.freeItems) {
             this.freeItems.add(new MenuItem(original));
         }
@@ -160,8 +158,8 @@ public class Menu {
         return this.sections.indexOf(sec);
     }
 
-    public ObservableList<Section> getSections() {
-        return FXCollections.unmodifiableObservableList(this.sections);
+    public ArrayList<Section> getSections() {
+        return this.sections;
     }
 
     public Section getSectionForItem(MenuItem mi) {
@@ -177,8 +175,8 @@ public class Menu {
         return freeItems.indexOf(mi);
     }
 
-    public ObservableList<MenuItem> getFreeItems() {
-        return FXCollections.unmodifiableObservableList(this.freeItems);
+    public ArrayList<MenuItem> getFreeItems() {
+        return this.freeItems;
     }
 
     public void setTitle(String title) {
@@ -199,12 +197,12 @@ public class Menu {
         return u.getId() == this.owner.getId();
     }
 
-    public ObservableMap<String, Boolean> getFeatures() {
-        return FXCollections.unmodifiableObservableMap(this.featuresMap);
+    public Map<String, Boolean> getFeatures() {
+        return this.featuresMap;
     }
 
-    public void updateFreeItems(ObservableList<MenuItem> newItems) {
-        ObservableList<MenuItem> updatedList = FXCollections.observableArrayList();
+    public void updateFreeItems(ArrayList<MenuItem> newItems) {
+        ArrayList<MenuItem> updatedList = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i++) {
             MenuItem mi = newItems.get(i);
             MenuItem prev = this.findItemById(mi.getId());
@@ -227,8 +225,8 @@ public class Menu {
         return null;
     }
 
-    private void updateSections(ObservableList<Section> newSections) {
-        ObservableList<Section> updatedList = FXCollections.observableArrayList();
+    private void updateSections(ArrayList<Section> newSections) {
+        ArrayList<Section> updatedList = new ArrayList<>();
         for (int i = 0; i < newSections.size(); i++) {
             Section sec = newSections.get(i);
             Section prev = this.findSectionById(sec.getId());
@@ -347,6 +345,9 @@ public class Menu {
         // Delete existing features if any
         String updDel = "DELETE FROM MenuFeatures WHERE menu_id = " + m.getId();
         int ret = PersistenceManager.executeUpdate(updDel);
+        if (ret > 0) {
+            System.out.println("Features deleted: " + ret);
+        }
 
         featuresToDB(m);
     }
@@ -394,10 +395,10 @@ public class Menu {
 
         String del = "DELETE FROM Menus WHERE id = " + m.getId();
         PersistenceManager.executeUpdate(del);
-        loadedMenus.remove(m);
+        loadedMenus.remove(m.getId());
     }
 
-    public static ObservableList<Menu> loadAllMenus() {
+    public static ArrayList<Menu> loadAllMenus() {
         String query = "SELECT * FROM Menus WHERE " + true;
         ArrayList<Menu> newMenus = new ArrayList<>();
         ArrayList<Integer> newMids = new ArrayList<>();
@@ -490,7 +491,7 @@ public class Menu {
         for (Menu m: newMenus) {
             loadedMenus.put(m.id, m);
         }
-        return FXCollections.observableArrayList(loadedMenus.values());
+        return new ArrayList<Menu>(loadedMenus.values());
     }
 
     public static void saveSectionOrder(Menu m) {
