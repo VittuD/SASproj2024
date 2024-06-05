@@ -8,6 +8,7 @@ import catering.businesslogic.recipe.KitchenDuty;
 import catering.businesslogic.turn.KitchenTurn;
 import catering.businesslogic.user.Cook;
 import catering.businesslogic.menu.Menu;
+import catering.businesslogic.menu.MenuItem;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -18,6 +19,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -32,28 +37,27 @@ public class ServiceSummary {
 
     }
 
+    public static String convertServiceSummaryToJson(HashMap<Turn, ArrayList<Assignment>> serviceSummary) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<Turn, ArrayList<Assignment>>>() {}.getType();
+        return gson.toJson(serviceSummary, type);
+    }
+
+    public static HashMap<Turn, ArrayList<Assignment>> convertJsonToServiceSummary(String json) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<Turn, ArrayList<Assignment>>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
     public void open(Service service) {
         Service currentService = new Service();
-        String serviceQuery = "SELECT * FROM Services WHERE id = ?";
+        String serviceQuery = "SELECT * FROM Services WHERE id = " + service.getId();
 
         PersistenceManager.executeQuery(serviceQuery, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
                 currentService.setId(rs.getInt("id"));
-                currentService.setEventId(rs.getInt("eventId"));
-                currentService.setName(rs.getString("name"));
-                currentService.setPlace(rs.getString("place"));
-                currentService.setApprovedMenuId(rs.getInt("approvedMenuId"));
-                PersistenceManager.executeQuery("SELECT * FROM Menus WHERE id = " + currentService.getApprovedMenuId(), new ResultHandler() {
-                    @Override
-                    public void handle(ResultSet rs) throws SQLException {
-                        // Logic to set menu    
-                    }
-                });
-                currentService.setServiceDate(Date.valueOf(rs.getDate("serviceDate").toLocalDate()));
-                currentService.setTimeStart(Time.valueOf(rs.getTime("timeStart").toLocalTime()));
-                currentService.setTimeEnd(Time.valueOf(rs.getTime("timeEnd").toLocalTime()));
-                currentService.setExpectedParticipants(rs.getInt("expectedParticipants"));
+                currentService.setServiceSummary(convertJsonToServiceSummary(rs.getString("serviceSummary")));
             }
         });
     }

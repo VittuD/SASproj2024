@@ -1,5 +1,8 @@
 package catering.businesslogic.event;
 
+import catering.businesslogic.assignment.ServiceSummary;
+import catering.businesslogic.menu.Menu;
+
 public class Service {
     private int id;
     private int eventId;
@@ -10,6 +13,21 @@ public class Service {
     private java.sql.Time timeStart;
     private java.sql.Time timeEnd;
     private Integer expectedParticipants;
+    private Menu menu;
+    private ServiceSummary serviceSummary;
+
+    public ServiceSummary getServiceSummary() {
+        return serviceSummary;
+    }
+    public void setServiceSummary(ServiceSummary serviceSummary) {
+        this.serviceSummary = serviceSummary;
+    }
+    public Menu getMenu() {
+        return menu;
+    }
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
     public int getId() {
         return id;
     }

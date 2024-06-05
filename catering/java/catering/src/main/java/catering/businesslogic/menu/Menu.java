@@ -21,6 +21,11 @@ public class Menu {
     private boolean published;
     private boolean inUse;
 
+    public void setInUse(boolean inUse) {
+        this.inUse = inUse;
+    }
+
+
     private Map<String, Boolean> featuresMap;
     private ArrayList<MenuItem> freeItems;
     private ArrayList<Section> sections;

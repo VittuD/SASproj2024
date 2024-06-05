@@ -13,8 +13,10 @@ public class Assignment {
     private boolean completed;
     private List<Cook> cooks;
     private int quantity;
+    private KitchenDuty kitchenDuty;
 
     public Assignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, String desc, boolean completed, int quantity) {
+        this.kitchenDuty = kD;
         this.description = desc;
         this.estimatedTime = eT;
         this.completed = completed;
