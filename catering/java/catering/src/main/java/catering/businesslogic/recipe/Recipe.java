@@ -77,5 +77,9 @@ public class Recipe extends KitchenDuty {
         return rec;
     }
 
+    // Getters and Setters
+    public List<Preparation> getPreparations() {
+        return preparations;
+    }
 
 }
