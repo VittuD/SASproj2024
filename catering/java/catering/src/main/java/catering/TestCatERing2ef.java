@@ -12,7 +12,7 @@ public class TestCatERing2ef {
         try {
             /* System.out.println("TEST DATABASE CONNECTION");
             PersistenceManager.testSQLConnection();*/
-            CatERing.getInstance().getUserManager().fakeLogin("Lidia");
+            CatERing.getInstance().getUserManager().login("Lidia");
             System.out.println(CatERing.getInstance().getUserManager().getCurrentUser());
             Menu m = CatERing.getInstance().getMenuManager().createMenu("Menu Pinco Pallino");
             Section antipasti = CatERing.getInstance().getMenuManager().defineSection("Antipasti");

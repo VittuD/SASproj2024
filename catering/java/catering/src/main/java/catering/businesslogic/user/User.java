@@ -30,6 +30,19 @@ public class User {
         return roles.contains(Role.CHEF);
     }
 
+
+    public boolean isCook() {
+        return roles.contains(Role.CUOCO);
+    }
+
+    public boolean isOrganizer() {
+        return roles.contains(Role.ORGANIZZATORE);
+    }
+
+    public boolean isService() {
+        return roles.contains(Role.SERVIZIO);
+    }
+
     public String getUserName() {
         return username;
     }
@@ -91,7 +104,11 @@ public class User {
         return load;
     }
 
-
+    /**
+     * Load a user from the database
+     * @param username the username of the user to load
+     * @return the user object
+     */
     public static User loadUser(String username) {
         User u = new User();
         String userQuery = "SELECT * FROM Users WHERE username='"+username+"'";
