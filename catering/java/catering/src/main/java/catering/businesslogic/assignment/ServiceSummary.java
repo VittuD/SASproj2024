@@ -89,16 +89,22 @@ public class ServiceSummary {
      */
     public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
         //TODO persistence
-        if (kD instanceof Preparation) {
-            this.serviceSummary.get(kitchenTurn).add(new Assignment((Preparation) kD, kitchenTurn, eT, cooks, kD.getDescription(), false, quantity));
+        if (kD instanceof Preparation || (kD instanceof Recipe && ((Recipe) kD).getPreparations().isEmpty())) {
+            this.serviceSummary.get(kitchenTurn).add(new Assignment.Builder()
+                    .description(kD.getDescription())
+                    .estimatedTime(eT)
+                    .completed(false)
+                    .cooks(cooks)
+                    .quantity(quantity)
+                    .kitchenDuty(kD)
+                    .kitchenTurn(kitchenTurn)
+                    .build());
         }
         if (kD instanceof Recipe) {
             if (!((Recipe) kD).getPreparations().isEmpty()) {
                 for (Preparation preparation : ((Recipe) kD).getPreparations()) {
                     addAssignment(preparation, kitchenTurn, eT, cooks, quantity);
                 }
-            } else {
-                this.serviceSummary.get(kitchenTurn).add(new Assignment((Recipe) kD, kitchenTurn, eT, cooks, kD.getDescription(), false, quantity));
             }
         }
     }
