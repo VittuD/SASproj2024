@@ -52,6 +52,7 @@ public class User {
 
     // STATIC METHODS FOR PERSISTENCE
 
+
     public static User loadUserById(int uid) {
         if (loadedUsers.containsKey(uid)) return loadedUsers.get(uid);
 
@@ -89,6 +90,7 @@ public class User {
         }
         return load;
     }
+
 
     public static User loadUser(String username) {
         User u = new User();
