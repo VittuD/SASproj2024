@@ -17,15 +17,6 @@ public class Assignment {
     private KitchenDuty kitchenDuty;
     private KitchenTurn kitchenTurn;
 
-    /*public Assignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, String desc, boolean completed, int quantity) {
-        this.kitchenDuty = kD;
-        this.description = desc;
-        this.estimatedTime = eT;
-        this.completed = completed;
-        this.cooks = cooks;
-        this.quantity = quantity;
-    }*/
-
     // Builder pattern to avoid telescoping constructor
     public static class Builder {
         private String description;
@@ -86,6 +77,16 @@ public class Assignment {
         this.quantity = builder.quantity;
     }
 
+    /**
+     * This method is used to edit the details of an Assignment.
+     *
+     * @param turn The Turn instance representing the new turn for the assignment. If null, the turn is not updated.
+     * @param cooks The list of Cook instances representing the new cooks for the assignment. If null, the cooks are not updated.
+     * @param description The new description for the assignment. If null, the description is not updated.
+     * @param completed The new completion status for the assignment.
+     * @param quantity The new quantity for the assignment.
+     * @param estimatedTime The new estimated time duration for the assignment.
+     */
     public void edit(Turn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) {
         if (turn != null) {
             // Assuming Turn has a method to update or assign turn
@@ -103,4 +104,15 @@ public class Assignment {
     }
 
     // Getters and setters for each field could be added here
+    public void setCooks(List<Cook> cooks) {
+        this.cooks = cooks;
+    }
+
+    public KitchenDuty getKitchenDuty() {
+        return kitchenDuty;
+    }
+
+    public KitchenTurn getKitchenTurn() {
+        return kitchenTurn;
+    }
 }

@@ -118,8 +118,38 @@ public class ServiceSummary {
         // Logic to assign assignment
     }
 
-    public void modifyAssignment(Assignment assignment, Turn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) {
-        // Logic to modify assignment
+    /*
+     * This method is used to modify the details of an Assignment.
+     * It gets the List of Assignments for a given Turn and modifies the details of the specific Assignment instance.
+     *
+     * @param assignment The Assignment instance to be modified.
+     * @param turn The Turn instance representing the new turn for the assignment. If null, the turn is not updated.
+     * @param cooks The list of Cook instances representing the new cooks for the assignment. If null, the cooks are not updated.
+     * @param description The new description for the assignment. If null, the description is not updated.
+     * @param completed The new completion status for the assignment.
+     * @param quantity The new quantity for the assignment.
+     * @param estimatedTime The new estimated time duration for the assignment.
+     * @throws IllegalArgumentException If the passed list of assignments does not contain the same assignments as the serviceSummary map.
+     */
+    public void modifyAssignment(Assignment assignment, Turn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) throws IllegalArgumentException {
+        List<Assignment> assignments = this.serviceSummary.get(turn);
+        int index = assignments.indexOf(assignment);
+
+        if (index == -1) {
+            throw new IllegalArgumentException("The specified assignment is not in the list related to the turn.");
+        }
+
+        Assignment modifiedAssignment = new Assignment.Builder()
+                .description(description)
+                .estimatedTime(estimatedTime)
+                .completed(completed)
+                .cooks(cooks)
+                .quantity(quantity)
+                .kitchenDuty(assignment.getKitchenDuty())
+                .kitchenTurn(assignment.getKitchenTurn())
+                .build();
+
+        assignments.set(index, modifiedAssignment);
     }
 
     /**
@@ -130,7 +160,7 @@ public class ServiceSummary {
      * @param assignments The list of Assignment instances to be ordered.
      * @throws IllegalArgumentException If the passed list of assignments does not contain the same assignments as the serviceSummary map.
      */
-    public void orderAssignments(List<Assignment> assignments, KitchenTurn turn) {
+    public void orderAssignments(List<Assignment> assignments, KitchenTurn turn) throws IllegalArgumentException{
         // Check if the passed list of assignments contains exactly the same assignments as the serviceSummary map
         for (List<Assignment> assignmentList : serviceSummary.values()) {
             for (Assignment assignment : assignmentList) {
