@@ -105,7 +105,7 @@ public class ServiceSummary {
                     .kitchenDuty(kD)
                     .kitchenTurn(kitchenTurn)
                     .build());
-            //Persistance ServiceSummary
+            //Persistence ServiceSummary
             String json = convertServiceSummaryToJson(this.serviceSummary);
             String updateQuery = "UPDATE Services SET service_summary = '" + json + "' WHERE kitchen_turn = " + convertKitchenTurnToJson(kitchenTurn);
             PersistenceManager.executeUpdate(updateQuery);
@@ -123,10 +123,6 @@ public class ServiceSummary {
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
         this.serviceSummary.get(kitchenTurn).remove(assignment);
         //TODO persistence
-    }
-
-    public void assignAssignment(Assignment assignment, List<Cook> cooks, Turn turn) {
-        // Logic to assign assignment
     }
 
     /*
