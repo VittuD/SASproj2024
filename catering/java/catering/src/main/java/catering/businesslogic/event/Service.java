@@ -1,7 +1,10 @@
 package catering.businesslogic.event;
 
+import java.util.List;
+
 import catering.businesslogic.assignment.ServiceSummary;
 import catering.businesslogic.menu.Menu;
+import catering.businesslogic.turn.KitchenTurn;
 
 public class Service {
     private int id;
@@ -15,7 +18,14 @@ public class Service {
     private Integer expectedParticipants;
     private Menu menu;
     private ServiceSummary serviceSummary;
+    private List<KitchenTurn> kitchenTurns;
 
+    public List<KitchenTurn> getKitchenTurns() {
+        return kitchenTurns;
+    }
+    public void setKitchenTurns(List<KitchenTurn> kitchenTurns) {
+        this.kitchenTurns = kitchenTurns;
+    }
     public ServiceSummary getServiceSummary() {
         return serviceSummary;
     }
