@@ -1,6 +1,8 @@
 package catering.businesslogic.assignment;
 
 import catering.businesslogic.event.Service;
+import catering.businesslogic.recipe.Preparation;
+import catering.businesslogic.recipe.Recipe;
 import catering.businesslogic.turn.Turn;
 import catering.businesslogic.recipe.KitchenDuty;
 import catering.businesslogic.turn.KitchenTurn;
@@ -27,7 +29,7 @@ public class ServiceSummary {
     }
 
     public void create(Menu menu) {
-        // Logic to create service summary from menu
+
     }
 
     public void open(Service service) {
@@ -60,8 +62,30 @@ public class ServiceSummary {
         return serviceSummary.getOrDefault(turn, new ArrayList<>());
     }
 
-    public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks) {
-        // Logic to add assignment
+    /**
+     * This method is used to add a new Assignment to the serviceSummary map.
+     * The Assignment is created based on the type of KitchenDuty provided.
+     * If the KitchenDuty is a Recipe, the method will create an Assignment for each Preparation in the Recipe.
+     *
+     * @param kD The KitchenDuty instance, which can be either a Preparation or a Recipe.
+     * @param kitchenTurn The KitchenTurn instance representing the kitchen turn for the assignment.
+     * @param eT The estimated time duration for the assignment.
+     * @param cooks The list of Cook instances assigned to the assignment.
+     * @param quantity The quantity for the assignment.
+     */
+    public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
+        if (kD instanceof Preparation) {
+            this.serviceSummary.get(kitchenTurn).add(new Assignment((Preparation) kD, kitchenTurn, eT, cooks, kD.getDescription(), false, quantity));
+        }
+        if (kD instanceof Recipe) {
+            if (!((Recipe) kD).getPreparations().isEmpty()) {
+                for (Preparation preparation : ((Recipe) kD).getPreparations()) {
+                    addAssignment(preparation, kitchenTurn, eT, cooks, quantity);
+                }
+            } else {
+                this.serviceSummary.get(kitchenTurn).add(new Assignment((Recipe) kD, kitchenTurn, eT, cooks, kD.getDescription(), false, quantity));
+            }
+        }
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
@@ -78,6 +102,14 @@ public class ServiceSummary {
 
     public void orderAssignments(ArrayList<Assignment> assignments) {
         // Logic to order assignments
+    }
+
+    // Getters and Setters
+    public HashMap<Turn, ArrayList<Assignment>> getServiceSummary() {
+        return serviceSummary;
+    }
+    public void setServiceSummary(HashMap<Turn, ArrayList<Assignment>> serviceSummary) {
+        this.serviceSummary = serviceSummary;
     }
 }
 
