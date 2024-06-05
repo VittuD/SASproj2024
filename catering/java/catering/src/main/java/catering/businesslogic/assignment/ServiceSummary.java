@@ -9,6 +9,7 @@ import catering.businesslogic.turn.KitchenTurn;
 import catering.businesslogic.user.Cook;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.MenuItem;
+import catering.businesslogic.menu.Section;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -27,25 +28,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServiceSummary {
-    protected HashMap<Turn, ArrayList<Assignment>> serviceSummary;
+    protected HashMap<Turn, List<Assignment>> serviceSummary;
 
     public ServiceSummary() {
         this.serviceSummary = new HashMap<>();
     }
 
-    public void create(Menu menu) {
-
-    }
-
-    public static String convertServiceSummaryToJson(HashMap<Turn, ArrayList<Assignment>> serviceSummary) {
+    public static String convertServiceSummaryToJson(HashMap<Turn, List<Assignment>> serviceSummary) {
         Gson gson = new Gson();
-        Type type = new TypeToken<HashMap<Turn, ArrayList<Assignment>>>() {}.getType();
+        Type type = new TypeToken<HashMap<Turn, List<Assignment>>>() {}.getType();
         return gson.toJson(serviceSummary, type);
     }
 
-    public static HashMap<Turn, ArrayList<Assignment>> convertJsonToServiceSummary(String json) {
+    public static HashMap<Turn, List<Assignment>> convertJsonToServiceSummary(String json) {
         Gson gson = new Gson();
-        Type type = new TypeToken<HashMap<Turn, ArrayList<Assignment>>>() {}.getType();
+        Type type = new TypeToken<HashMap<Turn, List<Assignment>>>() {}.getType();
         return gson.fromJson(json, type);
     }
 
@@ -60,6 +57,19 @@ public class ServiceSummary {
             }
         });
         return currentService;
+    }
+
+    public ServiceSummary create(Menu menu) {
+        ServiceSummary newServiceSummary = new ServiceSummary();
+        for (Section section : menu.getSections()) {
+            for (MenuItem item : section.getItems()) {               ;
+                for (Preparation preparation : item.getItemRecipe().getPreparations()) {
+                    Duration preparationTime = Duration.ofMinutes(0);
+                    newServiceSummary.addAssignment(preparation, new KitchenTurn(), preparationTime, new ArrayList<>(), 1);
+                }
+            }
+        }
+        return newServiceSummary;
     }
 
     public List<Assignment> showAssignmentsState(Turn turn) {
@@ -106,7 +116,7 @@ public class ServiceSummary {
         // Logic to modify assignment
     }
 
-    /*
+    /**
      * This method is used to order the assignments based on user supplied preference.
      * First it checks that the passed list of assignments contains exactly the same assignments as the serviceSummary map.
      * Then it orders the assignments based on the user supplied preference.
