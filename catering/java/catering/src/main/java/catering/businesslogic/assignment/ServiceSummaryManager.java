@@ -88,7 +88,7 @@ public class ServiceSummaryManager {
 
     public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks) {
         // Logic to add assignment
-        notifyAddAssignment(new Assignment(kD, kitchenTurn, eT, cooks, "", false));
+        notifyAddAssignment(new Assignment(kD, kitchenTurn, eT, cooks, "", false, 1));
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {

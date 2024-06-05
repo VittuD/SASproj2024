@@ -7,27 +7,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class Recipe {
+public class Recipe extends KitchenDuty {
     private static Map<Integer, Recipe> all = new HashMap<>();
 
-    private int id;
-    private String name;
+    private List<Preparation> preparations = new ArrayList<>();
+    public int id;
 
-    private Recipe() {
+    public Recipe() {
+    }
 
+    public Recipe(String name, String instructions, String description, List<Preparation> preparations, int id) {
+        super(name, instructions, description);
+        this.id = id;
+        this.preparations = preparations;
     }
 
     public Recipe(String name) {
-        id = 0;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getId() {
-        return id;
+        super(name, "", "");
     }
 
     public String toString() {
@@ -53,7 +49,7 @@ public class Recipe {
             }
         });
         ArrayList<Recipe> ret = new ArrayList<Recipe>(all.values());
-        Collections.sort(ret, new Comparator<Recipe>() {
+        ret.sort(new Comparator<Recipe>() {
             @Override
             public int compare(Recipe o1, Recipe o2) {
                 return (o1.getName().compareTo(o2.getName()));
