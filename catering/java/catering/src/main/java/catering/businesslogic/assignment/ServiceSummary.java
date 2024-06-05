@@ -22,7 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServiceSummary {
-    private HashMap<Turn, ArrayList<Assignment>> serviceSummary;
+    private HashMap<Turn, List<Assignment>> serviceSummary;
 
     public ServiceSummary() {
         this.serviceSummary = new HashMap<>();
@@ -74,6 +74,7 @@ public class ServiceSummary {
      * @param quantity The quantity for the assignment.
      */
     public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
+        //TODO persistence
         if (kD instanceof Preparation) {
             this.serviceSummary.get(kitchenTurn).add(new Assignment((Preparation) kD, kitchenTurn, eT, cooks, kD.getDescription(), false, quantity));
         }
@@ -89,7 +90,8 @@ public class ServiceSummary {
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
-        // Logic to delete assignment
+        this.serviceSummary.get(kitchenTurn).remove(assignment);
+        //TODO persistence
     }
 
     public void assignAssignment(Assignment assignment, List<Cook> cooks, Turn turn) {
@@ -100,15 +102,25 @@ public class ServiceSummary {
         // Logic to modify assignment
     }
 
-    public void orderAssignments(ArrayList<Assignment> assignments) {
+    public void orderAssignments(List<Assignment> assignments) {
         // Logic to order assignments
     }
 
+    /**
+     * This method is used to show the state of the assignments for a given turn.
+     *
+     * @param turn The Turn instance for which the assignments state will be shown.
+     * @return A list of Assignment instances representing the assignments for the given turn.
+     */
+    public List<Assignment> showAssigmentState(Turn turn) {
+        return serviceSummary.get(turn);
+    }
+
     // Getters and Setters
-    public HashMap<Turn, ArrayList<Assignment>> getServiceSummary() {
+    public HashMap<Turn, List<Assignment>> getServiceSummary() {
         return serviceSummary;
     }
-    public void setServiceSummary(HashMap<Turn, ArrayList<Assignment>> serviceSummary) {
+    public void setServiceSummary(HashMap<Turn, List<Assignment>> serviceSummary) {
         this.serviceSummary = serviceSummary;
     }
 }
