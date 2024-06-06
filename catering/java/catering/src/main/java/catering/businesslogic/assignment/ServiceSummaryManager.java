@@ -135,7 +135,7 @@ public class ServiceSummaryManager {
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
-        // Logic to delete assignment
+        managedServiceSummary.deleteAssignment(assignment, kitchenTurn);
         notifyDeleteAssignment(assignment);
     }
 

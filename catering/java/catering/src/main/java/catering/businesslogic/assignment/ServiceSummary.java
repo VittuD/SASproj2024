@@ -126,8 +126,7 @@ public class ServiceSummary {
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
         this.serviceSummary.get(kitchenTurn).remove(assignment);
-
-        // Persistence ServiceSummary
+        String delString = "DELETE FROM Assignments WHERE id = ";
         saveServiceSummary(kitchenTurn);
     }
 

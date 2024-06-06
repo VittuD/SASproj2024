@@ -149,6 +149,30 @@ INSERT INTO `Menus` VALUES (80,'Coffee break mattutino',2,1),(82,'Coffee break p
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Assignment`
+--
+
+CREATE TABLE Assignment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(255),
+    estimatedTime TIME,  -- Assuming 'Duration' can be stored as TIME or INTERVAL
+    completed BOOLEAN,
+    cooks JSON,          -- Assuming 'List of Cook' can be stored as JSON
+    quantity INT,
+    kT INT               -- Assuming KitchenTurn is another table; this would be a foreign key
+);
+
+--
+-- Dumping data for table `Assignment`
+--
+
+-- Assuming 'KitchenTurn' table exists, add a foreign key relationship:
+ALTER TABLE Assignment
+ADD CONSTRAINT fk_kitchenTurn
+FOREIGN KEY (kT) REFERENCES KitchenTurn(id);
+
+
+--
 -- Table structure for table `Recipes`
 --
 
