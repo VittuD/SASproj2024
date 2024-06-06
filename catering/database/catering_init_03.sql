@@ -134,6 +134,7 @@ CREATE TABLE `Menus` (
   `owner_id` int(11) DEFAULT NULL,
   `published` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
+  FOREIGN KEY (`owner_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -167,7 +168,31 @@ CREATE TABLE `Recipes` (
 --
 -- Dumping data for table `Recipes`
 --
+LOCK TABLES `Recipes` WRITE;
+/*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
+INSERT INTO `Recipes` (`id`, `name`, `description`, `instructions`, `preparations_id`) VALUES 
+(1,'Vitello tonnato', 'Vitello con salsa tonnata', 'fare la salsa tonnata e metterla sul vitello', '["1,15"]'),
+(2,'Carpaccio di spada', 'description2', 'instructions2', '["2"]'),
+(3,'Alici marinate', 'description3', 'instructions3', '["3"]'),
+(4,'Insalata di riso', 'description4', 'instructions4', '["4"]'),
+(5,'Penne al sugo di baccalà', 'description5', 'instructions5', '["5"]'),
+(6,'Pappa al pomodoro', 'description6', 'instructions6', '["6"]'),
+(7,'Hamburger con bacon e cipolla caramellata', 'description7', 'instructions7', '["7"]'),
+(8,'Salmone al forno', 'description8', 'instructions8', '["8"]'),
+(9,'Croissant', 'description9', 'instructions9', '["9"]'),
+(10,'Pane al cioccolato', 'description10', 'instructions10', '["10"]'),
+(11,'Girelle all\'uvetta', 'description11', 'instructions11', '["11"]'),
+(12,'Panini al latte', 'description12', 'instructions12', '["12"]'),
+(13,'Biscotti di pasta frolla', 'description13', 'instructions13', '["13"]'),
+(14,'Lingue di gatto', 'description14', 'instructions14', '["14"]');
+/*!40000 ALTER TABLE `Recipes` ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `Preparation`
+--
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 DROP TABLE IF EXISTS `Preparation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -176,12 +201,15 @@ CREATE TABLE Preparation (
     `name` tinytext NOT NULL,
     `description` tinytext,
     `instructions` tinytext
-);
-
-LOCK TABLES `Recipes` WRITE;
-/*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
-INSERT INTO `Recipes` VALUES (1,'Vitello tonnato'),(2,'Carpaccio di spada'),(3,'Alici marinate'),(4,'Insalata di riso'),(5,'Penne al sugo di baccalà'),(6,'Pappa al pomodoro'),(7,'Hamburger con bacon e cipolla caramellata'),(8,'Salmone al forno'),(9,'Croissant'),(10,'Pane al cioccolato'),(11,'Girelle all\'uvetta'),(12,'Panini al latte'),(13,'Biscotti di pasta frolla'),(14,'Lingue di gatto'),(15,'Bigné farciti'),(16,'Pizzette'),(17,'Tramezzini'),(18,'Sorbetto al limone'),(19,'Torta Saint Honoré'),(20,'Risotto alla zucca');
-/*!40000 ALTER TABLE `Recipes` ENABLE KEYS */;
+)ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;;
+/*!40101 SET character_set_client = @saved_cs_client */;
+--
+-- Dumping data for table `Preparation`
+--
+LOCK TABLES `Preparation` WRITE;
+/*!40000 ALTER TABLE `Preparation` DISABLE KEYS */;
+INSERT INTO `Preparation` values (1,'Salsa Tonnata','Salsa a base di tonno e maionese','Mescolare il tonno con la maionese'),(2,'Carpaccio di spada','Fettine di spada con olio e limone','Tagliare la spada a fettine sottili e condire con olio e limone'),(3,'Alici marinate','Alici con olio e limone','Mettere le alici in una ciotola con olio e limone'),(4,'Insalata di riso','Riso con verdure','Cuocere il riso e condire con verdure'),(5,'Penne al sugo di baccalà','Pasta con sugo di baccalà','Cuocere la pasta e condire con sugo di baccalà'),(6,'Pappa al pomodoro','Pappa con pomodoro','Cuocere la pappa e condire con pomodoro'),(7,'Hamburger con bacon e cipolla caramellata','Hamburger con bacon e cipolla','Cuocere l\'hamburger e condire con bacon e cipolla'),(8,'Salmone al forno','Salmone con verdure','Cuocere il salmone e condire con verdure'),(9,'Croissant','Pasta sfoglia con burro','Cuocere la pasta sfoglia con burro'),(10,'Pane al cioccolato','Pane con cioccolato','Cuocere il pane e condire con cioccolato'),(11,'Girelle all\'uvetta','Girelle con uvetta','Cuocere le girelle e condire con uvetta'),(12,'Panini al latte','Panini con latte','Cuocere i panini e condire con latte'),(13,'Biscotti di pasta frolla','Biscotti con pasta frolla','Cuocere i biscotti e condire con pasta frolla'),(14,'Lingue di gatto','Biscotti con zucchero','Cuocere i biscotti e condire con zucchero'),(15,'Filetto di vitello bollito','filetto di vitello bollito','mettere in una pentola il filetto insieme a verdure aromatiche e acqua');
+/*!40000 ALTER TABLE `Preparation` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -226,11 +254,10 @@ CREATE TABLE `Services` (
   `time_end` time DEFAULT NULL,
   `expected_participants` int(11) DEFAULT NULL,
   `service_summary` Json DEFAULT NULL,
-  `kitchen_turns_id` int(11) DEFAULT NULL,
+  `kitchen_turns_id` Json DEFAULT NULL,
   PRIMARY KEY (`id`)
   FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`)
   FOREIGN KEY (`approved_menu_id`) REFERENCES `Menus` (`id`)
-  FOREIGN KEY (`kitchen_turns_id`) REFERENCES `KitchenTurns` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
