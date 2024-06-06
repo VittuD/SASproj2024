@@ -9,17 +9,20 @@ import java.util.*;
 
 public class Recipe extends KitchenDuty {
     private static Map<Integer, Recipe> all = new HashMap<>();
-
     private List<Preparation> preparations = new ArrayList<>();
     public int id;
 
     public Recipe() {
     }
 
-    public Recipe(String name, String instructions, String description, List<Preparation> preparations, int id) {
+    public Recipe(String name, String instructions, String description, int id, List<Preparation> preparations ) {
         super(name, instructions, description);
         this.id = id;
         this.preparations = preparations;
+        List<Integer> prep_ids = new ArrayList<Integer>();
+        for (Preparation prep : preparations) {
+            prep_ids.add(prep.getId());
+        }
     }
 
     public Recipe(String name) {
@@ -75,6 +78,19 @@ public class Recipe extends KitchenDuty {
             }
         });
         return rec;
+    }
+
+    // Get the highest id in the database
+    public static int getMaxId() {
+        int maxId = 0;
+        String query = "SELECT MAX(id) FROM Recipes";
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                maxId = rs.getInt(1);
+            }
+        });
+        return maxId;
     }
 
     // Getters and Setters
