@@ -21,6 +21,10 @@ public class Menu {
     private boolean published;
     private boolean inUse;
 
+    public Menu(User user, String title, String[] menuFeatures) {
+        this(user, title, menuFeatures, false);
+    }
+
     public void setInUse(boolean inUse) {
         this.inUse = inUse;
     }
