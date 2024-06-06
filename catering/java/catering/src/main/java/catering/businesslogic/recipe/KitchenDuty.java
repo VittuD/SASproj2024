@@ -1,6 +1,7 @@
 package catering.businesslogic.recipe;
 
 public abstract class KitchenDuty {
+    protected int id;
     protected String name;
     protected String instructions;
     protected String description;
@@ -15,6 +16,12 @@ public abstract class KitchenDuty {
     }
 
     // Getters and Setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }

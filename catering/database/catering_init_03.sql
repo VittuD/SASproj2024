@@ -156,7 +156,10 @@ DROP TABLE IF EXISTS `Recipes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Recipes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` tinytext,
+  `name` tinytext NOT NULL,
+  `description` tinytext,
+  `instructions` tinytext,
+  'preparations_id' Json,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -164,6 +167,16 @@ CREATE TABLE `Recipes` (
 --
 -- Dumping data for table `Recipes`
 --
+
+DROP TABLE IF EXISTS `Preparation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE Preparation (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    `name` tinytext NOT NULL,
+    `description` tinytext,
+    `instructions` tinytext
+);
 
 LOCK TABLES `Recipes` WRITE;
 /*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
@@ -232,7 +245,7 @@ INSERT INTO `Services` VALUES (1,2,'Cena',86,0,'2020-08-13','20:00:00','23:30:00
 UNLOCK TABLES;
 
 --
--- Table structure for table `KitchenTurns`
+-- Table structure for table `Turns`
 --
 
 DROP TABLE IF EXISTS `Turns`;
@@ -270,7 +283,7 @@ CREATE TABLE KitchenTurn (
 DROP TABLE IF EXISTS `Kitchen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE KitchenTurn (
+CREATE TABLE Kitchen (
     `id` INT,
     `name` varchar(128) DEFAULT NULL
     PRIMARY KEY (`id`)
