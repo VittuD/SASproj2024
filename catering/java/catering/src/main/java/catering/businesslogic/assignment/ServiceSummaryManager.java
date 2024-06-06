@@ -9,7 +9,7 @@ import catering.businesslogic.user.Cook;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO a lot of shit is missing here
 public class ServiceSummaryManager {
     private List<ServiceSummaryEventReceiver> receivers;
 
