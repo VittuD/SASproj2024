@@ -10,7 +10,7 @@ import java.util.List;
 public interface ServiceSummaryEventReceiver {
     void updateCreateServiceSummary(ServiceSummary serviceSummary);
     void updateOpenServiceSummary(ServiceSummary serviceSummary);
-    void updateAddAssignment(Assignment assignment);
+    void updateAddAssignment(ServiceSummary serviceSummary);
     void updateAssignAssignment(List<Assignment> assignments, Cook cook, Turn turn);
     void updateOrderAssignment(ArrayList<Assignment> assignments);
     void updateShowAssignmentState(List<Assignment> assignments);

@@ -45,9 +45,9 @@ public class ServiceSummaryManager {
         }
     }
 
-    private void notifyAddAssignment(Assignment assignment) {
+    private void notifyAddAssignment(ServiceSummary serviceSummary) {
         for (ServiceSummaryEventReceiver receiver : receivers) {
-            receiver.updateAddAssignment(assignment);
+            receiver.updateAddAssignment(serviceSummary);
         }
     }
 
@@ -118,22 +118,16 @@ public class ServiceSummaryManager {
         notifyOpenServiceSummary(managedServiceSummary);
     }
 
-    public ArrayList<Assignment> showAssignmentsState(Turn turn) {
-        // Logic to get assignments state
-        return new ArrayList<>();
+    public List<Assignment> showAssignmentsState(Turn turn) {
+        List<Assignment> assignmentList = managedServiceSummary.showAssignmentsState(turn);
+        notifyShowAssignmentState(assignmentList);
+        return assignmentList;
     }
 
-    public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks) {
-        // Logic to add assignment
-        notifyAddAssignment(new Assignment.Builder().
-                description(kD.getDescription()).
-                estimatedTime(eT).
-                completed(false).
-                cooks(cooks).
-                quantity(1).
-                kitchenDuty(kD).
-                kitchenTurn(kitchenTurn).
-                build());
+    public ServiceSummary addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
+        managedServiceSummary.addAssignment(kD, kitchenTurn, eT, cooks, quantity);
+        notifyAddAssignment(managedServiceSummary);
+        return managedServiceSummary;
     }
 
     public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
