@@ -124,10 +124,10 @@ public class ServiceSummary {
         PersistenceManager.executeUpdate(updateQuery);
     }
 
-    public void deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
+    public ServiceSummary deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
         this.serviceSummary.get(kitchenTurn).remove(assignment);
-        String delString = "DELETE FROM Assignments WHERE id = ";
         saveServiceSummary(kitchenTurn);
+        return this;
     }
 
     /**
@@ -175,7 +175,7 @@ public class ServiceSummary {
      * @param assignments The list of Assignment instances to be ordered.
      * @throws IllegalArgumentException If the passed list of assignments does not contain the same assignments as the serviceSummary map.
      */
-    public void orderAssignments(List<Assignment> assignments, KitchenTurn turn) throws IllegalArgumentException{
+    public ServiceSummary orderAssignments(List<Assignment> assignments, KitchenTurn turn) throws IllegalArgumentException{
         // Check if the passed list of assignments contains exactly the same assignments as the serviceSummary map
         for (List<Assignment> assignmentList : serviceSummary.values()) {
             for (Assignment assignment : assignmentList) {
@@ -189,6 +189,7 @@ public class ServiceSummary {
 
         // Persistence ServiceSummary
         saveServiceSummary(turn);
+        return this;
     }
 
     /**

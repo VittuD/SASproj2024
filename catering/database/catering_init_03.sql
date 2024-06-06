@@ -161,15 +161,16 @@ CREATE TABLE Assignment (
     quantity INT,
     kT INT               -- Assuming KitchenTurn is another table; this would be a foreign key
 );
+ALTER TABLE Assignment
+ADD CONSTRAINT fk_kitchenTurn
+FOREIGN KEY (kT) REFERENCES KitchenTurn(id);
 
 --
 -- Dumping data for table `Assignment`
 --
 
 -- Assuming 'KitchenTurn' table exists, add a foreign key relationship:
-ALTER TABLE Assignment
-ADD CONSTRAINT fk_kitchenTurn
-FOREIGN KEY (kT) REFERENCES KitchenTurn(id);
+
 
 
 --
