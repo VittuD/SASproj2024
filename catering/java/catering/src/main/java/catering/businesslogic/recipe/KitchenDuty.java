@@ -9,18 +9,16 @@ public abstract class KitchenDuty {
     public KitchenDuty(){
     }
 
-    public KitchenDuty(String name, String instructions, String description) {
+    public KitchenDuty(String name, String instructions, String description, int id) {
         this.name = name;
         this.instructions = instructions;
         this.description = description;
+        this.id = id;
     }
 
     // Getters and Setters
     public int getId() {
         return id;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
     public String getName() {
         return name;
