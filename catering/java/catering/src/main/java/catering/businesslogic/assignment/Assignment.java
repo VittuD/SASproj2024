@@ -1,6 +1,5 @@
 package catering.businesslogic.assignment;
 
-import java.lang.module.ModuleDescriptor;
 import java.time.Duration;
 import java.util.List;
 import catering.businesslogic.recipe.KitchenDuty;

@@ -15,10 +15,10 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-//TODO a lot of shit is missing here
+
 public class ServiceSummaryManager {
     private ServiceSummary managedServiceSummary;
-    private List<ServiceSummaryEventReceiver> receivers;
+    private final List<ServiceSummaryEventReceiver> receivers;
 
     public ServiceSummaryManager(ServiceSummary managedServiceSummary) {
         this.receivers = new ArrayList<>();

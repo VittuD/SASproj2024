@@ -13,8 +13,6 @@ import catering.businesslogic.menu.Section;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.Duration;
 
 import java.util.ArrayList;
@@ -56,12 +54,7 @@ public class ServiceSummary {
         ServiceSummary currentService = new ServiceSummary();
         String serviceQuery = "SELECT * FROM Services WHERE id = " + service.getId();
 
-        PersistenceManager.executeQuery(serviceQuery, new ResultHandler() {
-            @Override
-            public void handle(ResultSet rs) throws SQLException {
-                currentService.serviceSummary = convertJsonToServiceSummary(rs.getString("service_summary"));
-            }
-        });
+        PersistenceManager.executeQuery(serviceQuery, rs -> currentService.serviceSummary = convertJsonToServiceSummary(rs.getString("service_summary")));
         return currentService;
     }
 

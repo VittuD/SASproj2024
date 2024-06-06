@@ -1,6 +1,5 @@
 package catering.businesslogic.assignment;
 
-import catering.businesslogic.event.Service;
 import catering.businesslogic.user.Cook;
 import catering.businesslogic.turn.Turn;
 
