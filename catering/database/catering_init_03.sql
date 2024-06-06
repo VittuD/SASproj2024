@@ -134,6 +134,7 @@ CREATE TABLE `Menus` (
   `owner_id` int(11) DEFAULT NULL,
   `published` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
+  FOREIGN KEY (`owner_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -253,11 +254,10 @@ CREATE TABLE `Services` (
   `time_end` time DEFAULT NULL,
   `expected_participants` int(11) DEFAULT NULL,
   `service_summary` Json DEFAULT NULL,
-  `kitchen_turns_id` int(11) DEFAULT NULL,
+  `kitchen_turns_id` Json DEFAULT NULL,
   PRIMARY KEY (`id`)
   FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`)
   FOREIGN KEY (`approved_menu_id`) REFERENCES `Menus` (`id`)
-  FOREIGN KEY (`kitchen_turns_id`) REFERENCES `KitchenTurns` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
