@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ServiceSummaryEventReceiver {
-    void updateCreateServiceSummary(Service service);
-    void updateOpenServiceSummary(Service service);
+    void updateCreateServiceSummary(ServiceSummary serviceSummary);
+    void updateOpenServiceSummary(ServiceSummary serviceSummary);
     void updateAddAssignment(Assignment assignment);
     void updateAssignAssignment(List<Assignment> assignments, Cook cook, Turn turn);
     void updateOrderAssignment(ArrayList<Assignment> assignments);

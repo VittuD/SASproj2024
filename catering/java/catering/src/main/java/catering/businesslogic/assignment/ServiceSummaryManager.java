@@ -33,15 +33,15 @@ public class ServiceSummaryManager {
         receivers.remove(receiver);
     }
 
-    private void notifyCreateServiceSummary(Service service) {
+    private void notifyCreateServiceSummary(ServiceSummary serviceSummary) {
         for (ServiceSummaryEventReceiver receiver : receivers) {
-            receiver.updateCreateServiceSummary(service);
+            receiver.updateCreateServiceSummary(serviceSummary);
         }
     }
 
-    private void notifyOpenServiceSummary(Service service) {
+    private void notifyOpenServiceSummary(ServiceSummary serviceSummary) {
         for (ServiceSummaryEventReceiver receiver : receivers) {
-            receiver.updateOpenServiceSummary(service);
+            receiver.updateOpenServiceSummary(serviceSummary);
         }
     }
 
@@ -84,7 +84,8 @@ public class ServiceSummaryManager {
     // Methods to create, open, show assignments state, add, delete, assign, modify, and order assignments
     public void create(Service service) {
         Menu relatedMenu = getMenuFromService(service);
-        managedServiceSummary.create(service, relatedMenu);
+        managedServiceSummary = managedServiceSummary.create(service, relatedMenu);
+        notifyCreateServiceSummary(managedServiceSummary);
     }
 
     /**
@@ -113,7 +114,8 @@ public class ServiceSummaryManager {
     }
 
     public void openServiceSummary(Service service) {
-        notifyOpenServiceSummary(service);
+        managedServiceSummary = managedServiceSummary.open(service);
+        notifyOpenServiceSummary(managedServiceSummary);
     }
 
     public ArrayList<Assignment> showAssignmentsState(Turn turn) {
