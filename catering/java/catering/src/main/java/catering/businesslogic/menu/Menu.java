@@ -36,7 +36,7 @@ public class Menu {
         this.featuresMap = new HashMap<>();
     }
 
-    public Menu(User user, String title, String[] menuFeatures) {
+    public Menu(User user, String title, String[] menuFeatures, boolean published) {
         id = 0;
 
         if (title != null) {
@@ -54,6 +54,8 @@ public class Menu {
 
         this.sections = new ArrayList<>();
         this.freeItems = new ArrayList<>();
+
+        this.published = published;
 
     }
 

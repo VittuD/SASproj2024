@@ -5,7 +5,6 @@ import catering.persistence.ResultHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Preparation extends KitchenDuty{
