@@ -11,14 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Recipe extends KitchenDuty {
     private static Map<Integer, Recipe> all = new HashMap<>();
     private List<Preparation> preparations = new ArrayList<>();
-    public int id;
 
     public Recipe() {
     }
 
-    public Recipe(String name, String instructions, String description, int id, List<Preparation> preparations ) {
-        super(name, instructions, description);
-        this.id = id;
+    public Recipe(String name, String instructions, String description, List<Preparation> preparations ) {
+        super(name, instructions, description, getMaxId()+1);
         this.preparations = preparations;
         List<Integer> prep_ids = new ArrayList<Integer>();
         for (Preparation prep : preparations) {
@@ -27,7 +25,7 @@ public class Recipe extends KitchenDuty {
     }
 
     public Recipe(String name) {
-        super(name, "", "");
+        super(name, "", "", getMaxId()+1);
     }
 
     public String toString() {
