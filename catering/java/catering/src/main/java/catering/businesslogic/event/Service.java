@@ -3,7 +3,6 @@ package catering.businesslogic.event;
 import java.util.List;
 
 import catering.businesslogic.assignment.ServiceSummary;
-import catering.businesslogic.menu.Menu;
 import catering.businesslogic.turn.KitchenTurn;
 
 public class Service {
@@ -16,7 +15,6 @@ public class Service {
     private java.sql.Time timeStart;
     private java.sql.Time timeEnd;
     private Integer expectedParticipants;
-    private Menu menu;
     private ServiceSummary serviceSummary;
     private List<KitchenTurn> kitchenTurns;
 
@@ -32,12 +30,7 @@ public class Service {
     public void setServiceSummary(ServiceSummary serviceSummary) {
         this.serviceSummary = serviceSummary;
     }
-    public Menu getMenu() {
-        return menu;
-    }
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
+
     public int getId() {
         return id;
     }
