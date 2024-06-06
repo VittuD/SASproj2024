@@ -51,13 +51,13 @@ public class ServiceSummaryManager {
         }
     }
 
-    private void notifyAssignAssignment(List<Assignment> assignments, Cook cook, Turn turn) {
+    private void notifyAssignAssignment(List<Assignment> assignments, List<Cook> cook, Turn turn) {
         for (ServiceSummaryEventReceiver receiver : receivers) {
             receiver.updateAssignAssignment(assignments, cook, turn);
         }
     }
 
-    private void notifyModifyAssignment(Assignment assignment, Turn turn, Cook cook, String description, boolean completed) {
+    private void notifyModifyAssignment(Assignment assignment, Turn turn, List<Cook> cook, String description, boolean completed) {
         for (ServiceSummaryEventReceiver receiver : receivers) {
             receiver.updateModifyAssignment(assignment, turn, cook);
         }
@@ -136,14 +136,14 @@ public class ServiceSummaryManager {
         return ss;
     }
 
-    public void assignAssignment(Assignment assignment, List<Cook> cooks, Turn turn) {
-        // Logic to assign assignment
-        notifyAssignAssignment(List.of(assignment), null, turn);
+    public void assignAssignment(Assignment assignment, List<Cook> cooks, KitchenTurn turn) {
+        managedServiceSummary.modifyAssignment(assignment, turn, cooks, assignment.getDescription(), assignment.getCompleted(), assignment.getQuantity(), assignment.getEstimatedTime());
+        notifyAssignAssignment(List.of(assignment), cooks, turn);
     }
 
-    public void modifyAssignment(Assignment assignment, Turn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) {
-        // Logic to modify assignment
-        notifyModifyAssignment(assignment, turn, null, description, completed);
+    public void modifyAssignment(Assignment assignment, KitchenTurn turn, List<Cook> cooks, String description, boolean completed, int quantity, Duration estimatedTime) {
+        managedServiceSummary.modifyAssignment(assignment, turn, cooks, description, completed, quantity, estimatedTime);
+        notifyModifyAssignment(assignment, turn, cooks, description, completed);
     }
 
     public ServiceSummary orderAssignments(ArrayList<Assignment> assignments, KitchenTurn kitchenTurn) {
