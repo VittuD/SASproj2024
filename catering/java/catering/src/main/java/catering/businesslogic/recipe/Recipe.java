@@ -6,6 +6,7 @@ import catering.persistence.ResultHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Recipe extends KitchenDuty {
     private static Map<Integer, Recipe> all = new HashMap<>();
@@ -82,15 +83,15 @@ public class Recipe extends KitchenDuty {
 
     // Get the highest id in the database
     public static int getMaxId() {
-        int maxId = 0;
+        AtomicInteger maxId = new AtomicInteger(0);
         String query = "SELECT MAX(id) FROM Recipes";
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
-                maxId = rs.getInt(1);
+                maxId.set(rs.getInt(1));
             }
         });
-        return maxId;
+        return maxId.get();
     }
 
     // Getters and Setters
