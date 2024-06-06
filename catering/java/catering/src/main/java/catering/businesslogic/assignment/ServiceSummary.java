@@ -65,7 +65,7 @@ public class ServiceSummary {
         return currentService;
     }
 
-    public ServiceSummary create(Menu menu) {
+    public ServiceSummary create(Service service, Menu menu) {
         ServiceSummary newServiceSummary = new ServiceSummary();
         for (Section section : menu.getSections()) {
             for (MenuItem item : section.getItems()) {
@@ -75,7 +75,7 @@ public class ServiceSummary {
                 }
             }
         }
-
+        PersistenceManager.executeUpdate("UPDATE Services SET service_summary = '" + convertServiceSummaryToJson(newServiceSummary.serviceSummary) + "' WHERE id = " + service.getId());
         return newServiceSummary;
     }
 
