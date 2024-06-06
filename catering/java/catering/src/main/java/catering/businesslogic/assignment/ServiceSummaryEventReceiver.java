@@ -11,10 +11,10 @@ public interface ServiceSummaryEventReceiver {
     void updateCreateServiceSummary(ServiceSummary serviceSummary);
     void updateOpenServiceSummary(ServiceSummary serviceSummary);
     void updateAddAssignment(ServiceSummary serviceSummary);
-    void updateAssignAssignment(List<Assignment> assignments, Cook cook, Turn turn);
+    void updateAssignAssignment(List<Assignment> assignments, List<Cook> cook, Turn turn);
     void updateOrderAssignment(ArrayList<Assignment> assignments);
     void updateShowAssignmentState(List<Assignment> assignments);
     void updateDeleteAssignment(Assignment assignment);
-    void updateModifyAssignment(Assignment assignment, Turn turn, Cook cook);
+    void updateModifyAssignment(Assignment assignment, Turn turn, List<Cook> cook);
 }
 

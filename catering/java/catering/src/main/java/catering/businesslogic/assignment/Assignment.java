@@ -17,6 +17,22 @@ public class Assignment {
     private KitchenDuty kitchenDuty;
     private KitchenTurn kitchenTurn;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Duration getEstimatedTime() {
+        return estimatedTime;
+    }
+
     // Builder pattern to avoid telescoping constructor
     public static class Builder {
         private String description;
