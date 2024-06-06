@@ -131,9 +131,9 @@ public class ServiceSummaryManager {
     }
 
     public ServiceSummary deleteAssignment(Assignment assignment, KitchenTurn kitchenTurn) {
-        ServiceSummary ss =managedServiceSummary.deleteAssignment(assignment, kitchenTurn);
+        managedServiceSummary.deleteAssignment(assignment, kitchenTurn);
         notifyDeleteAssignment(assignment);
-        return ss;
+        return managedServiceSummary;
     }
 
     public void assignAssignment(Assignment assignment, List<Cook> cooks, KitchenTurn turn) {
@@ -147,8 +147,8 @@ public class ServiceSummaryManager {
     }
 
     public ServiceSummary orderAssignments(ArrayList<Assignment> assignments, KitchenTurn kitchenTurn) {
-        ServiceSummary ss = orderAssignments(assignments, kitchenTurn);
+        managedServiceSummary.orderAssignments(assignments, kitchenTurn);
         notifyOrderAssignment(assignments);
-        return ss;
+        return managedServiceSummary;
     }
 }
