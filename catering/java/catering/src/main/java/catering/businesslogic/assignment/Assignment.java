@@ -32,6 +32,12 @@ public class Assignment {
         return estimatedTime;
     }
 
+    public boolean isCompleted() { return completed; }
+
+    public List<Cook> getCooks() {
+        return cooks;
+    }
+
     // Builder pattern to avoid telescoping constructor
     public static class Builder {
         private String description;

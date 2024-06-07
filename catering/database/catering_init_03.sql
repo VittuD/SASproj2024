@@ -14,7 +14,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
---//TODO fix tables to adhere to the schema
+--
 --
 -- Table structure for table `Events`
 --
@@ -133,7 +133,7 @@ CREATE TABLE `Menus` (
   `title` tinytext,
   `owner_id` int(11) DEFAULT NULL,
   `published` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   FOREIGN KEY (`owner_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -151,7 +151,9 @@ UNLOCK TABLES;
 --
 -- Table structure for table `Assignment`
 --
-
+DROP TABLE IF EXISTS `Assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Assignment (
     id INT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(255),
@@ -185,7 +187,7 @@ CREATE TABLE `Recipes` (
   `name` tinytext NOT NULL,
   `description` tinytext,
   `instructions` tinytext,
-  'preparations_id' Json,
+  `preparations_id` Json,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -206,7 +208,7 @@ INSERT INTO `Recipes` (`id`, `name`, `description`, `instructions`, `preparation
 (8,'Salmone al forno', 'description8', 'instructions8', '["8"]'),
 (9,'Croissant', 'description9', 'instructions9', '["9"]'),
 (10,'Pane al cioccolato', 'description10', 'instructions10', '["10"]'),
-(11,'Girelle all\'uvetta', 'description11', 'instructions11', '["11"]'),
+(11,'Girelle all\uvetta', 'description11', 'instructions11', '["11"]'),
 (12,'Panini al latte', 'description12', 'instructions12', '["12"]'),
 (13,'Biscotti di pasta frolla', 'description13', 'instructions13', '["13"]'),
 (14,'Lingue di gatto', 'description14', 'instructions14', '["14"]');
@@ -280,8 +282,8 @@ CREATE TABLE `Services` (
   `expected_participants` int(11) DEFAULT NULL,
   `service_summary` Json DEFAULT NULL,
   `kitchen_turns_id` Json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`),
   FOREIGN KEY (`approved_menu_id`) REFERENCES `Menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -292,7 +294,7 @@ CREATE TABLE `Services` (
 
 LOCK TABLES `Services` WRITE;
 /*!40000 ALTER TABLE `Services` DISABLE KEYS */;
-INSERT INTO `Services` VALUES (1,2,'Cena',86,0,'2020-08-13','20:00:00','23:30:00',25),(2,1,'Coffee break mattino',0,80,'2020-09-25','10:30:00','11:30:00',100),(3,1,'Colazione di lavoro',0,0,'2020-09-25','13:00:00','14:00:00',80),(4,1,'Coffee break pomeriggio',0,82,'2020-09-25','16:00:00','16:30:00',100),(5,1,'Cena sociale',0,0,'2020-09-25','20:00:00','22:30:00',40),(6,3,'Pranzo giorno 1',0,0,'2020-10-02','12:00:00','15:00:00',200),(7,3,'Pranzo giorno 2',0,0,'2020-10-03','12:00:00','15:00:00',300),(8,3,'Pranzo giorno 3',0,0,'2020-10-04','12:00:00','15:00:00',400);
+INSERT INTO `Services` VALUES (1,2,'Cena','CannavacciuoloBistrot',86,'2020-08-13','20:00:00','23:30:00',25,NULL,NULL);
 /*!40000 ALTER TABLE `Services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -321,10 +323,10 @@ DROP TABLE IF EXISTS `KitchenTurn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE KitchenTurn (
-    `id` INT,
+    `id` INT PRIMARY KEY,
     `full` boolean DEFAULT '0',
     `kitchen_id` INT,
-    FOREIGN KEY (id) REFERENCES Turn(id)
+    FOREIGN KEY (id) REFERENCES Turns(id),
     FOREIGN KEY (kitchen_id) REFERENCES Kitchen(id)
 );
 
@@ -337,7 +339,7 @@ DROP TABLE IF EXISTS `Kitchen`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Kitchen (
     `id` INT,
-    `name` varchar(128) DEFAULT NULL
+    `name` varchar(128) DEFAULT NULL,
     PRIMARY KEY (`id`)
 );
 

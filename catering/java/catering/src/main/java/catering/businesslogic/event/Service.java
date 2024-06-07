@@ -18,6 +18,12 @@ public class Service {
     private ServiceSummary serviceSummary;
     private List<KitchenTurn> kitchenTurns;
 
+    public Service(){}
+
+    public Service(String s){
+        this.name=s;
+    }
+
     public List<KitchenTurn> getKitchenTurns() {
         return kitchenTurns;
     }
