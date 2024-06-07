@@ -31,6 +31,10 @@ public abstract class Turn {
         this.service = service;
     }
 
+    public void updateTurn(Turn turn) {
+        // Logic to update turn
+    }
+
     @Override
     public String toString() {
         return "Turn{" +
@@ -40,11 +44,7 @@ public abstract class Turn {
                 ", assList=" + assList +
                 ", published=" + published +
                 ", deadline=" + deadline +
-                ", service=" + service+
+                ", service=" + service +
                 '}';
-    }
-
-    public void updateTurn(Turn turn) {
-        // Logic to update turn
     }
 }

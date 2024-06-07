@@ -3,6 +3,7 @@ package catering.businesslogic.assignment;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.recipe.Preparation;
 import catering.businesslogic.recipe.Recipe;
+import catering.businesslogic.turn.KitchenTurnSerialize;
 import catering.businesslogic.turn.Turn;
 import catering.businesslogic.recipe.KitchenDuty;
 import catering.businesslogic.turn.KitchenTurn;
@@ -11,7 +12,6 @@ import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.MenuItem;
 import catering.businesslogic.menu.Section;
 import catering.persistence.PersistenceManager;
-import catering.persistence.ResultHandler;
 
 import java.time.Duration;
 
@@ -20,31 +20,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Map;
 
 public class ServiceSummary {
-    protected HashMap<Turn, List<Assignment>> serviceSummary;
+    protected HashMap<KitchenTurn, List<Assignment>> serviceSummary;
 
     public ServiceSummary() {
         this.serviceSummary = new HashMap<>();
     }
 
-    public static String convertServiceSummaryToJson(HashMap<Turn, List<Assignment>> serviceSummary) {
+    public static String convertServiceSummaryToJson(HashMap<KitchenTurn, List<Assignment>> serviceSummary) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalTimeTypeAdapter())
+                .registerTypeAdapter(KitchenTurn.class, new KitchenTurnSerialize())
+                .registerTypeAdapter(Assignment.class, new AssignmentSerialize())
                 .create();
-        Type type = new TypeToken<HashMap<Turn, List<Assignment>>>() {}.getType();
+
+        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();
         return gson.toJson(serviceSummary, type);
     }
 
-    public static HashMap<Turn, List<Assignment>> convertJsonToServiceSummary(String json) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<HashMap<Turn, List<Assignment>>>() {}.getType();
+    public static HashMap<KitchenTurn, List<Assignment>> convertJsonToServiceSummary(String json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalTimeTypeAdapter())
+                .registerTypeAdapter(KitchenTurn.class, new JsonSerializer<KitchenTurn>() {
+                    @Override
+                    public JsonElement serialize(KitchenTurn src, Type typeOfSrc, JsonSerializationContext context) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("full", src.isFull());
+                        jsonObject.addProperty("kitchen", src.getKitchen().getName());
+                        jsonObject.addProperty("id", src.getKitchen().getId().toString());
+                        return jsonObject;
+                    }
+                })
+                .registerTypeAdapter(Assignment.class, new JsonSerializer<Assignment>() {
+                    @Override
+                    public JsonElement serialize(Assignment src, Type typeOfSrc, JsonSerializationContext context) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("description", src.getDescription());
+                        jsonObject.addProperty("estimatedTime", src.getEstimatedTime().getSeconds());
+                        jsonObject.addProperty("completed", src.getCompleted());
+                        jsonObject.addProperty("quantity", src.getQuantity());
+                        return jsonObject;
+                    }
+                })
+                .create();
+
+        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();
         return gson.fromJson(json, type);
     }
 
@@ -52,6 +77,48 @@ public class ServiceSummary {
         Gson gson = new Gson();
         Type type = new TypeToken<KitchenTurn>() {}.getType();
         return gson.toJson(kitchenTurn, type);
+    }
+
+    public static KitchenTurn convertJsonToKitchenTurn(String json) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<KitchenTurn>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static String convertAssignmentToJson(Assignment assignment) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Assignment>() {}.getType();
+        return gson.toJson(assignment, type);
+    }
+
+    public static Assignment convertJsonToAssignment(String json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalTimeTypeAdapter())
+                .registerTypeAdapter(KitchenTurn.class, new JsonSerializer<KitchenTurn>() {
+                    @Override
+                    public JsonElement serialize(KitchenTurn src, Type typeOfSrc, JsonSerializationContext context) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("full", src.isFull());
+                        jsonObject.addProperty("kitchen", src.getKitchen().getName());
+                        jsonObject.addProperty("id", src.getKitchen().getId().toString());
+                        return jsonObject;
+                    }
+                })
+                .registerTypeAdapter(Assignment.class, new JsonSerializer<Assignment>() {
+                    @Override
+                    public JsonElement serialize(Assignment src, Type typeOfSrc, JsonSerializationContext context) {
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("description", src.getDescription());
+                        jsonObject.addProperty("estimatedTime", src.getEstimatedTime().getSeconds());
+                        jsonObject.addProperty("completed", src.getCompleted());
+                        jsonObject.addProperty("quantity", src.getQuantity());
+                        return jsonObject;
+                    }
+                })
+                .create();
+
+        Type type = new TypeToken<Assignment>() {}.getType();
+        return gson.fromJson(json, type);
     }
 
     public ServiceSummary open(Service service) {
@@ -196,10 +263,10 @@ public class ServiceSummary {
     }
 
     // Getters and Setters
-    public HashMap<Turn, List<Assignment>> getServiceSummary() {
+    public HashMap<KitchenTurn, List<Assignment>> getServiceSummary() {
         return serviceSummary;
     }
-    public void setServiceSummary(HashMap<Turn, List<Assignment>> serviceSummary) {
+    public void setServiceSummary(HashMap<KitchenTurn, List<Assignment>> serviceSummary) {
         this.serviceSummary = serviceSummary;
     }
 }

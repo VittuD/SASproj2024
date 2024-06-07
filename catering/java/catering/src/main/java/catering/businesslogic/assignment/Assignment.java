@@ -32,6 +32,7 @@ public class Assignment {
         return estimatedTime;
     }
 
+
     // Builder pattern to avoid telescoping constructor
     public static class Builder {
         private String description;
@@ -43,6 +44,10 @@ public class Assignment {
         private KitchenTurn kitchenTurn;
 
         public Builder() {}
+
+        public String getDescription() {
+            return description;
+        }
 
         public Builder description(String description) {
             this.description = description;
@@ -90,6 +95,8 @@ public class Assignment {
         this.completed = builder.completed;
         this.cooks = builder.cooks;
         this.quantity = builder.quantity;
+        this.kitchenDuty = builder.kitchenDuty;
+        this.kitchenTurn = builder.kitchenTurn;
     }
 
     /**
@@ -129,5 +136,18 @@ public class Assignment {
 
     public KitchenTurn getKitchenTurn() {
         return kitchenTurn;
+    }
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "description='" + description + '\'' +
+                ", estimatedTime=" + estimatedTime +
+                ", completed=" + completed +
+                ", cooks=" + cooks +
+                ", quantity=" + quantity +
+                ", kitchenDuty=" + kitchenDuty +
+                ", kitchenTurn=" + kitchenTurn +
+                '}';
     }
 }

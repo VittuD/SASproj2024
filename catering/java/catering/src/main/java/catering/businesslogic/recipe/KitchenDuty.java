@@ -38,5 +38,15 @@ public abstract class KitchenDuty {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "KitchenDuty{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", instructions='" + instructions + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
 

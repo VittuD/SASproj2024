@@ -23,4 +23,12 @@ public class Kitchen {
     public UUID getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Kitchen{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

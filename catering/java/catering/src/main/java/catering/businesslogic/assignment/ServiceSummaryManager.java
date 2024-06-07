@@ -9,6 +9,8 @@ import catering.businesslogic.user.Cook;
 import catering.businesslogic.user.User;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
+import catering.businesslogic.menu.MenuManager;
+import catering.businesslogic.CatERing;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
