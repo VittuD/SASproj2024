@@ -14,7 +14,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
---//TODO fix tables to adhere to the schema
+--
 --
 -- Table structure for table `Events`
 --
@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `Events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) DEFAULT NULL,
-  `date_start` date DEFAULT NULL,
-  `date_end` date DEFAULT NULL,
-  `expected_participants` int(11) DEFAULT NULL,
-  `organizer_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+                          `id` int(11) NOT NULL AUTO_INCREMENT,
+                          `name` varchar(128) DEFAULT NULL,
+                          `date_start` date DEFAULT NULL,
+                          `date_end` date DEFAULT NULL,
+                          `expected_participants` int(11) DEFAULT NULL,
+                          `organizer_id` int(11) NOT NULL,
+                          PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,9 +51,9 @@ DROP TABLE IF EXISTS `MenuFeatures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MenuFeatures` (
-  `menu_id` int(11) NOT NULL,
-  `name` varchar(128) NOT NULL DEFAULT '',
-  `value` tinyint(1) DEFAULT '0'
+                                `menu_id` int(11) NOT NULL,
+                                `name` varchar(128) NOT NULL DEFAULT '',
+                                `value` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -75,13 +75,13 @@ DROP TABLE IF EXISTS `MenuItems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MenuItems` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu_id` int(11) NOT NULL,
-  `section_id` int(11) DEFAULT NULL,
-  `description` tinytext,
-  `recipe_id` int(11) NOT NULL,
-  `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                             `menu_id` int(11) NOT NULL,
+                             `section_id` int(11) DEFAULT NULL,
+                             `description` tinytext,
+                             `recipe_id` int(11) NOT NULL,
+                             `position` int(11) DEFAULT NULL,
+                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,11 +103,11 @@ DROP TABLE IF EXISTS `MenuSections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `MenuSections` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu_id` int(11) NOT NULL,
-  `name` tinytext,
-  `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+                                `id` int(11) NOT NULL AUTO_INCREMENT,
+                                `menu_id` int(11) NOT NULL,
+                                `name` tinytext,
+                                `position` int(11) DEFAULT NULL,
+                                PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -129,12 +129,12 @@ DROP TABLE IF EXISTS `Menus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Menus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` tinytext,
-  `owner_id` int(11) DEFAULT NULL,
-  `published` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
-  FOREIGN KEY (`owner_id`) REFERENCES `Users` (`id`)
+                         `id` int(11) NOT NULL AUTO_INCREMENT,
+                         `title` tinytext,
+                         `owner_id` int(11) DEFAULT NULL,
+                         `published` tinyint(1) DEFAULT '0',
+                         PRIMARY KEY (`id`),
+                         FOREIGN KEY (`owner_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -151,19 +151,21 @@ UNLOCK TABLES;
 --
 -- Table structure for table `Assignment`
 --
-
+DROP TABLE IF EXISTS `Assignment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Assignment (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    description VARCHAR(255),
-    estimatedTime TIME,  -- Assuming 'Duration' can be stored as TIME or INTERVAL
-    completed BOOLEAN,
-    cooks JSON,          -- Assuming 'List of Cook' can be stored as JSON
-    quantity INT,
-    kT INT               -- Assuming KitchenTurn is another table; this would be a foreign key
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            description VARCHAR(255),
+                            estimatedTime TIME,  -- Assuming 'Duration' can be stored as TIME or INTERVAL
+                            completed BOOLEAN,
+                            cooks JSON,          -- Assuming 'List of Cook' can be stored as JSON
+                            quantity INT,
+                            kT INT               -- Assuming KitchenTurn is another table; this would be a foreign key
 );
 ALTER TABLE Assignment
-ADD CONSTRAINT fk_kitchenTurn
-FOREIGN KEY (kT) REFERENCES KitchenTurn(id);
+    ADD CONSTRAINT fk_kitchenTurn
+        FOREIGN KEY (kT) REFERENCES KitchenTurn(id);
 
 --
 -- Dumping data for table `Assignment`
@@ -181,12 +183,12 @@ DROP TABLE IF EXISTS `Recipes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Recipes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` tinytext NOT NULL,
-  `description` tinytext,
-  `instructions` tinytext,
-  'preparations_id' Json,
-  PRIMARY KEY (`id`)
+                           `id` int(11) NOT NULL AUTO_INCREMENT,
+                           `name` tinytext NOT NULL,
+                           `description` tinytext,
+                           `instructions` tinytext,
+                           `preparations_id` Json,
+                           PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -195,21 +197,21 @@ CREATE TABLE `Recipes` (
 --
 LOCK TABLES `Recipes` WRITE;
 /*!40000 ALTER TABLE `Recipes` DISABLE KEYS */;
-INSERT INTO `Recipes` (`id`, `name`, `description`, `instructions`, `preparations_id`) VALUES 
-(1,'Vitello tonnato', 'Vitello con salsa tonnata', 'fare la salsa tonnata e metterla sul vitello', '["1,15"]'),
-(2,'Carpaccio di spada', 'description2', 'instructions2', '["2"]'),
-(3,'Alici marinate', 'description3', 'instructions3', '["3"]'),
-(4,'Insalata di riso', 'description4', 'instructions4', '["4"]'),
-(5,'Penne al sugo di baccalà', 'description5', 'instructions5', '["5"]'),
-(6,'Pappa al pomodoro', 'description6', 'instructions6', '["6"]'),
-(7,'Hamburger con bacon e cipolla caramellata', 'description7', 'instructions7', '["7"]'),
-(8,'Salmone al forno', 'description8', 'instructions8', '["8"]'),
-(9,'Croissant', 'description9', 'instructions9', '["9"]'),
-(10,'Pane al cioccolato', 'description10', 'instructions10', '["10"]'),
-(11,'Girelle all\'uvetta', 'description11', 'instructions11', '["11"]'),
-(12,'Panini al latte', 'description12', 'instructions12', '["12"]'),
-(13,'Biscotti di pasta frolla', 'description13', 'instructions13', '["13"]'),
-(14,'Lingue di gatto', 'description14', 'instructions14', '["14"]');
+INSERT INTO `Recipes` (`id`, `name`, `description`, `instructions`, `preparations_id`) VALUES
+                                                                                           (1,'Vitello tonnato', 'Vitello con salsa tonnata', 'fare la salsa tonnata e metterla sul vitello', '["1,15"]'),
+                                                                                           (2,'Carpaccio di spada', 'description2', 'instructions2', '["2"]'),
+                                                                                           (3,'Alici marinate', 'description3', 'instructions3', '["3"]'),
+                                                                                           (4,'Insalata di riso', 'description4', 'instructions4', '["4"]'),
+                                                                                           (5,'Penne al sugo di baccalà', 'description5', 'instructions5', '["5"]'),
+                                                                                           (6,'Pappa al pomodoro', 'description6', 'instructions6', '["6"]'),
+                                                                                           (7,'Hamburger con bacon e cipolla caramellata', 'description7', 'instructions7', '["7"]'),
+                                                                                           (8,'Salmone al forno', 'description8', 'instructions8', '["8"]'),
+                                                                                           (9,'Croissant', 'description9', 'instructions9', '["9"]'),
+                                                                                           (10,'Pane al cioccolato', 'description10', 'instructions10', '["10"]'),
+                                                                                           (11,'Girelle all\uvetta', 'description11', 'instructions11', '["11"]'),
+                                                                                           (12,'Panini al latte', 'description12', 'instructions12', '["12"]'),
+                                                                                           (13,'Biscotti di pasta frolla', 'description13', 'instructions13', '["13"]'),
+                                                                                           (14,'Lingue di gatto', 'description14', 'instructions14', '["14"]');
 /*!40000 ALTER TABLE `Recipes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,10 +224,10 @@ DROP TABLE IF EXISTS `Preparation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Preparation (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    `name` tinytext NOT NULL,
-    `description` tinytext,
-    `instructions` tinytext
+                             id INT AUTO_INCREMENT PRIMARY KEY,
+                             `name` tinytext NOT NULL,
+                             `description` tinytext,
+                             `instructions` tinytext
 )ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;;
 /*!40101 SET character_set_client = @saved_cs_client */;
 --
@@ -245,9 +247,9 @@ DROP TABLE IF EXISTS `Roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Roles` (
-  `id` char(1) NOT NULL,
-  `role` varchar(128) NOT NULL DEFAULT 'servizio',
-  PRIMARY KEY (`id`)
+                         `id` char(1) NOT NULL,
+                         `role` varchar(128) NOT NULL DEFAULT 'servizio',
+                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,20 +271,20 @@ DROP TABLE IF EXISTS `Services`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Services` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `event_id` int(11) NOT NULL,
-  `name` varchar(128) DEFAULT NULL,
-  `place` varchar(128) DEFAULT NULL,
-  `approved_menu_id` int(11) DEFAULT '0',
-  `service_date` date DEFAULT NULL,
-  `time_start` time DEFAULT NULL,
-  `time_end` time DEFAULT NULL,
-  `expected_participants` int(11) DEFAULT NULL,
-  `service_summary` Json DEFAULT NULL,
-  `kitchen_turns_id` Json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`)
-  FOREIGN KEY (`approved_menu_id`) REFERENCES `Menus` (`id`)
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `event_id` int(11) NOT NULL,
+                            `name` varchar(128) DEFAULT NULL,
+                            `place` varchar(128) DEFAULT NULL,
+                            `approved_menu_id` int(11) DEFAULT '0',
+                            `service_date` date DEFAULT NULL,
+                            `time_start` time DEFAULT NULL,
+                            `time_end` time DEFAULT NULL,
+                            `expected_participants` int(11) DEFAULT NULL,
+                            `service_summary` Json DEFAULT NULL,
+                            `kitchen_turns_id` Json DEFAULT NULL,
+                            PRIMARY KEY (`id`),
+                            FOREIGN KEY (`event_id`) REFERENCES `Events` (`id`),
+                            FOREIGN KEY (`approved_menu_id`) REFERENCES `Menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -292,7 +294,7 @@ CREATE TABLE `Services` (
 
 LOCK TABLES `Services` WRITE;
 /*!40000 ALTER TABLE `Services` DISABLE KEYS */;
-INSERT INTO `Services` VALUES (1,2,'Cena',86,0,'2020-08-13','20:00:00','23:30:00',25),(2,1,'Coffee break mattino',0,80,'2020-09-25','10:30:00','11:30:00',100),(3,1,'Colazione di lavoro',0,0,'2020-09-25','13:00:00','14:00:00',80),(4,1,'Coffee break pomeriggio',0,82,'2020-09-25','16:00:00','16:30:00',100),(5,1,'Cena sociale',0,0,'2020-09-25','20:00:00','22:30:00',40),(6,3,'Pranzo giorno 1',0,0,'2020-10-02','12:00:00','15:00:00',200),(7,3,'Pranzo giorno 2',0,0,'2020-10-03','12:00:00','15:00:00',300),(8,3,'Pranzo giorno 3',0,0,'2020-10-04','12:00:00','15:00:00',400);
+INSERT INTO `Services` VALUES (1,2,'Cena','CannavacciuoloBistrot',86,'2020-08-13','20:00:00','23:30:00',25,NULL,NULL);
 /*!40000 ALTER TABLE `Services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,13 +306,13 @@ DROP TABLE IF EXISTS `Turns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Turns` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_id` int(11) NOT NULL,
-  `date` date DEFAULT NULL,
-  `time_start` time DEFAULT NULL,
-  `time_end` time DEFAULT NULL,
-  `published` boolean DEFAULT '0',
-  PRIMARY KEY (`id`)
+                         `id` int(11) NOT NULL AUTO_INCREMENT,
+                         `service_id` int(11) NOT NULL,
+                         `date` date DEFAULT NULL,
+                         `time_start` time DEFAULT NULL,
+                         `time_end` time DEFAULT NULL,
+                         `published` boolean DEFAULT '0',
+                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
@@ -321,11 +323,11 @@ DROP TABLE IF EXISTS `KitchenTurn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE KitchenTurn (
-    `id` INT,
-    `full` boolean DEFAULT '0',
-    `kitchen_id` INT,
-    FOREIGN KEY (id) REFERENCES Turn(id)
-    FOREIGN KEY (kitchen_id) REFERENCES Kitchen(id)
+                             `id` INT PRIMARY KEY,
+                             `full` boolean DEFAULT '0',
+                             `kitchen_id` INT,
+                             FOREIGN KEY (id) REFERENCES Turns(id),
+                             FOREIGN KEY (kitchen_id) REFERENCES Kitchen(id)
 );
 
 --
@@ -336,9 +338,9 @@ DROP TABLE IF EXISTS `Kitchen`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Kitchen (
-    `id` INT,
-    `name` varchar(128) DEFAULT NULL
-    PRIMARY KEY (`id`)
+                         `id` INT,
+                         `name` varchar(128) DEFAULT NULL,
+                         PRIMARY KEY (`id`)
 );
 
 --
@@ -349,8 +351,8 @@ DROP TABLE IF EXISTS `UserRoles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `UserRoles` (
-  `user_id` int(11) NOT NULL,
-  `role_id` char(1) NOT NULL DEFAULT 's'
+                             `user_id` int(11) NOT NULL,
+                             `role_id` char(1) NOT NULL DEFAULT 's'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -372,9 +374,9 @@ DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(128) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
+                         `id` int(11) NOT NULL AUTO_INCREMENT,
+                         `username` varchar(128) NOT NULL DEFAULT '',
+                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

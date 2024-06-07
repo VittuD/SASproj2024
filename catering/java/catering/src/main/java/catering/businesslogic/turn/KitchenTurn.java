@@ -5,5 +5,15 @@ public class KitchenTurn extends Turn {
 
     private Kitchen kitchen;
 
+    public KitchenTurn() {
+        super();
+        this.full = false;
+        this.kitchen = new Kitchen("Kitchen");
+    }
 
+    public KitchenTurn (boolean full) {
+        super();
+        this.full = full;
+        this.kitchen = new Kitchen("Kitchen");
+    }
 }

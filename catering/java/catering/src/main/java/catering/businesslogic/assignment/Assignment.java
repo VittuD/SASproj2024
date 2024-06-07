@@ -84,7 +84,7 @@ public class Assignment {
         }
     }
 
-    private Assignment(Builder builder) {
+    public Assignment(Builder builder) {
         this.description = builder.description;
         this.estimatedTime = builder.estimatedTime;
         this.completed = builder.completed;

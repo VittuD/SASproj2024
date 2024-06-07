@@ -15,11 +15,13 @@ import catering.persistence.ResultHandler;
 
 import java.time.Duration;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
@@ -33,7 +35,9 @@ public class ServiceSummary {
     }
 
     public static String convertServiceSummaryToJson(HashMap<Turn, List<Assignment>> serviceSummary) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalTimeTypeAdapter())
+                .create();
         Type type = new TypeToken<HashMap<Turn, List<Assignment>>>() {}.getType();
         return gson.toJson(serviceSummary, type);
     }
@@ -70,10 +74,6 @@ public class ServiceSummary {
         }
         PersistenceManager.executeUpdate("UPDATE Services SET service_summary = '" + convertServiceSummaryToJson(newServiceSummary.serviceSummary) + "' WHERE id = " + service.getId());
         return newServiceSummary;
-    }
-
-    public List<Assignment> showAssignmentsState(Turn turn) {
-        return serviceSummary.getOrDefault(turn, new ArrayList<>());
     }
 
     /**
@@ -191,8 +191,8 @@ public class ServiceSummary {
      * @param turn The Turn instance for which the assignments state will be shown.
      * @return A list of Assignment instances representing the assignments for the given turn.
      */
-    public List<Assignment> showAssigmentState(Turn turn) {
-        return serviceSummary.get(turn);
+    public List<Assignment> showAssignmentsState(Turn turn) {
+        return serviceSummary.getOrDefault(turn, new ArrayList<>());
     }
 
     // Getters and Setters
