@@ -37,4 +37,12 @@ class AssignmentTest {
         assertTrue(a.getCompleted());
         assertEquals(10, a.getQuantity());
     }
+
+    @Test
+    void getDescription() {
+        Assignment assignment = new Assignment.Builder()
+                .description("Test description")
+                .build();
+        assertEquals("Test description", assignment.getDescription());
+    }
 }

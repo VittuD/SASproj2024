@@ -1,7 +1,9 @@
 package catering.businesslogic.assignment;
 
+import catering.businesslogic.CatERing;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.menu.Menu;
+import catering.businesslogic.menu.MenuManager;
 import catering.businesslogic.recipe.KitchenDuty;
 import catering.businesslogic.turn.KitchenTurn;
 import catering.businesslogic.turn.Turn;
@@ -84,9 +86,9 @@ public class ServiceSummaryManager {
     }
 
     // Methods to create, open, show assignments state, add, delete, assign, modify, and order assignments
-    public void create(Service service) {
+    public void create(Service service, KitchenTurn kt) {
         Menu relatedMenu = getMenuFromService(service);
-        managedServiceSummary = managedServiceSummary.create(service, relatedMenu);
+        managedServiceSummary = managedServiceSummary.create(service, relatedMenu, kt);
         notifyCreateServiceSummary(managedServiceSummary);
     }
 
@@ -101,18 +103,26 @@ public class ServiceSummaryManager {
     public Menu getMenuFromService(Service service) {
         // Get menu from persistence: Service has a key 'approved_menu_id' and menu has a key 'id'
         String query = "SELECT * FROM Menus WHERE id = " + service.getApprovedMenuId();
-        final Menu[] menu = new Menu[1];
+        final Menu[] rmenu = new Menu[1];
         // Handle the result
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
+                /*
                 int user_id = rs.getInt("owner_id");
                 User user = User.loadUserById(user_id);
                 String[] features = new String[0];
                 menu[0] = new Menu(user, rs.getString("title"), features, rs.getBoolean("published"));
+                */
+                int menuId = rs.getInt("id");
+                CatERing.getInstance().getMenuManager().getAllMenus().forEach(menu -> {
+                    if (menu.getId() == menuId) {
+                        rmenu[0] = menu;//TODO fix this: for some reason it returns a menu where every recipe is the latest item in the section
+                    }
+                });
             }
         });
-        return menu[0];
+        return rmenu[0];
     }
 
     public void openServiceSummary(Service service) {

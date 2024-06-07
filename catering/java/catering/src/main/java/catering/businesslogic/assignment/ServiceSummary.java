@@ -23,7 +23,8 @@ import java.util.List;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ServiceSummary {
     protected HashMap<KitchenTurn, List<Assignment>> serviceSummary;
@@ -39,7 +40,7 @@ public class ServiceSummary {
                 .registerTypeAdapter(Assignment.class, new AssignmentSerialize())
                 .create();
 
-        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();
+        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();//TODO: isn't abel to convert because god is dead
         return gson.toJson(serviceSummary, type);
     }
 
@@ -129,17 +130,24 @@ public class ServiceSummary {
         return currentService;
     }
 
-    public ServiceSummary create(Service service, Menu menu) {
+    public ServiceSummary create(Service service, Menu menu, KitchenTurn kt) {
         ServiceSummary newServiceSummary = new ServiceSummary();
         for (Section section : menu.getSections()) {
             for (MenuItem item : section.getItems()) {
-                for (Preparation preparation : item.getItemRecipe().getPreparations()) {
+                List<Preparation> preparations = item.getItemRecipe().getPreparations();
+                if (preparations.isEmpty()) {
                     Duration preparationTime = Duration.ofMinutes(0);
-                    newServiceSummary.addAssignment(preparation, new KitchenTurn(), preparationTime, new ArrayList<>(), 1);
+                    newServiceSummary.addAssignment(item.getItemRecipe(), kt, preparationTime, new ArrayList<>(), 1);//we can use service to use THE EVIL, ideally we shouldn't
+                } else {
+                    for (Preparation preparation : preparations) {
+                        Duration preparationTime = Duration.ofMinutes(0);
+                        newServiceSummary.addAssignment(preparation, kt, preparationTime, new ArrayList<>(), 1);
+                    }
                 }
             }
         }
-        PersistenceManager.executeUpdate("UPDATE Services SET service_summary = '" + convertServiceSummaryToJson(newServiceSummary.serviceSummary) + "' WHERE id = " + service.getId());
+        String updateQuery = "UPDATE Services SET service_summary = '" + convertServiceSummaryToJson(newServiceSummary.serviceSummary) + "' WHERE id = " + service.getId();
+        PersistenceManager.executeUpdate(updateQuery);
         return newServiceSummary;
     }
 
@@ -156,16 +164,39 @@ public class ServiceSummary {
      */
     public void addAssignment(KitchenDuty kD, KitchenTurn kitchenTurn, Duration eT, List<Cook> cooks, int quantity) {
         if (kD instanceof Preparation || (kD instanceof Recipe && ((Recipe) kD).getPreparations().isEmpty())) {
-            this.serviceSummary.get(kitchenTurn).add(new Assignment.Builder()
-                    .description(kD.getDescription())
-                    .estimatedTime(eT)
-                    .completed(false)
-                    .cooks(cooks)
-                    .quantity(quantity)
-                    .kitchenDuty(kD)
-                    .kitchenTurn(kitchenTurn)
-                    .build());
-            saveServiceSummary(kitchenTurn);
+            Assignment.Builder builder = new Assignment.Builder();
+
+            if (kD != null && kD.getDescription() != null) {
+                builder.description(kD.getDescription());
+            }
+
+            if (eT != null) {
+                builder.estimatedTime(eT);
+            }
+
+            builder.completed(false); // This is a default value, so no null-check is needed
+
+            if (cooks != null) {
+                builder.cooks(cooks);
+            }
+
+            builder.quantity(quantity);
+
+            if (kD != null) {
+                builder.kitchenDuty(kD);
+            }
+
+            if (kitchenTurn != null) {
+                builder.kitchenTurn(kitchenTurn);
+            }
+
+            if (serviceSummary.containsKey(kitchenTurn)) {
+                serviceSummary.get(kitchenTurn).add(builder.build());
+            } else {
+                List<Assignment> assignments = new ArrayList<>();
+                assignments.add(builder.build());
+                serviceSummary.put(kitchenTurn, assignments);
+            }
         }
         if (kD instanceof Recipe) {
             if (!((Recipe) kD).getPreparations().isEmpty()) {

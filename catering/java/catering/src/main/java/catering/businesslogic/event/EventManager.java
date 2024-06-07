@@ -6,4 +6,8 @@ public class EventManager {
     public ArrayList<EventInfo> getEventInfo() {
         return EventInfo.loadAllEventInfo();
     }
+
+    public Service createService(String s) {
+        return new Service(s);
+    }
 }
