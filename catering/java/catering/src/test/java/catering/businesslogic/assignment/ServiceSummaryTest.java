@@ -85,7 +85,7 @@ class ServiceSummaryTest {
     @Test
     void create() {
         ServiceSummary serviceSummary = new ServiceSummary();
-        serviceSummary.create(s, m);
+        serviceSummary.create(s, m, new KitchenTurn());
     }
 
     @Test
