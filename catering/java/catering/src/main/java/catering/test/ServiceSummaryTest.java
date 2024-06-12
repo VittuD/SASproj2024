@@ -83,7 +83,7 @@ class ServiceSummaryTest {
     @org.junit.jupiter.api.Test
     void testShowAssigmentState() {
         serviceSummary.addAssignment(kitchenDuty, kitchenTurn, estimatedTime, cooks, quantity);
-        List<Assignment> assignments = serviceSummary.showAssigmentState(kitchenTurn);
+        List<Assignment> assignments = serviceSummary.showAssignmentsState(kitchenTurn);
         assertTrue(assignments.contains(kitchenDuty));
     }
 }

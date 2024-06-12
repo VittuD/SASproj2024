@@ -108,12 +108,6 @@ public class ServiceSummaryManager {
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
-                /*
-                int user_id = rs.getInt("owner_id");
-                User user = User.loadUserById(user_id);
-                String[] features = new String[0];
-                menu[0] = new Menu(user, rs.getString("title"), features, rs.getBoolean("published"));
-                */
                 int menuId = rs.getInt("id");
                 CatERing.getInstance().getMenuManager().getAllMenus().forEach(menu -> {
                     if (menu.getId() == menuId) {

@@ -8,7 +8,6 @@ import java.util.List;
 public class CookBook {
     private User owner;
     private List<KitchenDuty> cookBook;
-
     public CookBook() {
     }
 

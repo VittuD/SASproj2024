@@ -40,7 +40,7 @@ public class ServiceSummary {
                 .registerTypeAdapter(Assignment.class, new AssignmentSerialize())
                 .create();
 
-        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();//TODO: isn't abel to convert because god is dead
+        Type type = new TypeToken<HashMap<KitchenTurn, List<Assignment>>>() {}.getType();
         return gson.toJson(serviceSummary, type);
     }
 
@@ -130,6 +130,18 @@ public class ServiceSummary {
         return currentService;
     }
 
+    /**
+     * This method is used to create a new ServiceSummary for a given Service, Menu, and KitchenTurn.
+     * It iterates over each Section in the Menu, and for each MenuItem in the Section, it checks if there are any Preparations.
+     * If there are no Preparations, it creates an Assignment with the Recipe of the MenuItem, the KitchenTurn, a duration of 0 minutes, an empty list of Cooks, and a quantity of 1 (default values).
+     * If there are Preparations, it creates an Assignment for each Preparation with the same parameters.
+     * After all Assignments have been created, it converts the ServiceSummary to JSON and updates the 'service_summary' field in the 'Services' table in the database for the given Service.
+     *
+     * @param service The Service instance for which the ServiceSummary is to be created.
+     * @param menu The Menu instance containing the Sections and MenuItems for which Assignments are to be created.
+     * @param kt The KitchenTurn instance representing the kitchen turn for the assignments.
+     * @return A ServiceSummary instance representing the newly created ServiceSummary.
+     */
     public ServiceSummary create(Service service, Menu menu, KitchenTurn kt) {
         ServiceSummary newServiceSummary = new ServiceSummary();
         for (Section section : menu.getSections()) {
@@ -297,6 +309,7 @@ public class ServiceSummary {
     public HashMap<KitchenTurn, List<Assignment>> getServiceSummary() {
         return serviceSummary;
     }
+
     public void setServiceSummary(HashMap<KitchenTurn, List<Assignment>> serviceSummary) {
         this.serviceSummary = serviceSummary;
     }
