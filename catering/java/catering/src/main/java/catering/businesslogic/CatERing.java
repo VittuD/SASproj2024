@@ -7,6 +7,8 @@ import catering.businesslogic.menu.MenuManager;
 import catering.businesslogic.recipe.RecipeManager;
 import catering.businesslogic.user.UserManager;
 import catering.persistence.MenuPersistence;
+import catering.businesslogic.assignment.ServiceSummary;
+import catering.businesslogic.assignment.ServiceSummaryManager;
 
 public class CatERing {
     private static CatERing singleInstance;
@@ -23,7 +25,6 @@ public class CatERing {
     private UserManager userMgr;
     private EventManager eventMgr;
     private ServiceSummaryManager serviceSummaryMgr;
-
     private MenuPersistence menuPersistence;
 
     private CatERing() {

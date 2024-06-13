@@ -1,5 +1,6 @@
 package catering.businesslogic.assignment;
 
+import catering.businesslogic.CatERing;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.recipe.KitchenDuty;
@@ -13,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +56,10 @@ class ServiceSummaryTest {
 
     @Test
     void convertKitchenTurnToJson() {
+        KitchenTurn kitchenTurn = new KitchenTurn();
+        String json = ServiceSummary.convertKitchenTurnToJson(kitchenTurn);
+        System.out.println(json);
+        assertNotNull(json);
     }
 
     @Test
@@ -80,6 +88,11 @@ class ServiceSummaryTest {
 
     @Test
     void open() {
+        Menu m = CatERing.getInstance().getMenuManager().getAllMenus().get(2);
+        CatERing.getInstance().getMenuManager().setCurrentMenu(m);
+        Service s = CatERing.getInstance().getEventManager().createService("Service 1");
+        s.setApprovedMenuId(m.getId());
+        CatERing.getInstance().getServiceSummaryMgr().openServiceSummary(s);
     }
 
     @Test
@@ -90,10 +103,26 @@ class ServiceSummaryTest {
 
     @Test
     void showAssignmentsState() {
+        LocalDate date = LocalDate.of(2024, 6, 6);
+        LocalTime timeStart = LocalTime.of(9, 0);
+        LocalTime timeEnd = LocalTime.of(17, 0);
+        List<Assignment> assList = new ArrayList<>();
+        assList.add(new Assignment.Builder().
+                completed(false).
+                description("description1").
+                build());
+        assList.add(new Assignment.Builder().
+                completed(false).
+                description("description2").
+                build());
+        KitchenTurn kt = new KitchenTurn(date, timeStart, timeEnd, assList, false, null, s, true, null);
+        List<Assignment> list = CatERing.getInstance().getServiceSummaryMgr().showAssignmentsState(kt);
+        assertNotNull(list);
     }
 
     @Test
     void addAssignment() {
+        Assignment a = new Assignment.Builder().completed(false).description("description1").build();
     }
 
     @Test
