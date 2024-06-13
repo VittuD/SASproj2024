@@ -24,22 +24,6 @@ public class TestCreateSS {
         Menu m = CatERing.getInstance().getMenuManager().getAllMenus().get(2);
         CatERing.getInstance().getMenuManager().setCurrentMenu(m);
 
-        /*
-        Menu m = CatERing.getInstance().getMenuManager().createMenu("Menu da Cancellare");
-
-        Section antipasti = CatERing.getInstance().getMenuManager().defineSection("Antipasti");
-        Section secondi = CatERing.getInstance().getMenuManager().defineSection("Secondi");
-
-        ArrayList<Recipe> recipes = CatERing.getInstance().getRecipeManager().getRecipes();
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(0), antipasti);
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(1), antipasti);
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(2), antipasti);
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(6), secondi);
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(7), secondi);
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(3));
-        CatERing.getInstance().getMenuManager().insertItem(recipes.get(4));
-        */
-
         ArrayList<Recipe> recipes = CatERing.getInstance().getRecipeManager().getRecipes();
 
         CatERing.getInstance().getMenuManager().publish();
